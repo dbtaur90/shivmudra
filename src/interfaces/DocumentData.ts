@@ -6,5 +6,6 @@ export interface DocumentData {
     photoImage?: string | null,
     signImage?: string | null,
     created_at?: Date | null,
-    updated_at?: Date | null
+    updated_at?: Date | null;
+    [key: string]: unknown;
 }

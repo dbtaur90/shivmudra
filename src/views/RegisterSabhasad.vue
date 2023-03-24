@@ -69,8 +69,9 @@
         <option value="वितरण">Distributorship</option>
         <option value="इतर"></option>
       </datalist>
-      <form ref="tabParent" class="row g-1">
+      <div ref="tabParent" class="row g-1">
         <div ref="allSteps" class="all-steps" id="all-steps">
+          <span class="step"></span>
           <span class="step"></span>
           <span class="step"></span>
           <span class="step"></span>
@@ -125,12 +126,13 @@
           </ul>
         </div>
         <div class="tab">
-          <form @submit="return false;">
+          <form ref="basicForm1">
             <div class="row g-1 mb-3">
               <div class="form-floating col">
                 <input
                   required
                   type="text"
+                  @change="checkValidataty($event.target)"
                   v-model="sabhasadDetail.reference"
                   class="form-control"
                   id="reference"
@@ -149,6 +151,7 @@
                 <input
                   required
                   type="text"
+                  @change="checkValidataty($event.target)"
                   v-model="sabhasadDetail.firstName"
                   class="form-control"
                   id="firstName"
@@ -162,6 +165,7 @@
                 <input
                   required
                   type="text"
+                  @change="checkValidataty($event.target)"
                   v-model="sabhasadDetail.middleName"
                   class="form-control"
                   id="middleName"
@@ -175,6 +179,7 @@
                 <input
                   required
                   type="text"
+                  @change="checkValidataty($event.target)"
                   v-model="sabhasadDetail.lastName"
                   class="form-control"
                   id="lastName"
@@ -186,8 +191,10 @@
             <div class="row g-1 mb-3">
               <div class="form-floating col">
                 <select
+                  required
                   class="form-select"
                   v-model="sabhasadDetail.bloodGroup"
+                  @change="checkValidataty($event.target)"
                   id="bloodGroup"
                   aria-label="Floating label select example"
                 >
@@ -211,13 +218,17 @@
               <div class="col-8">
                 <div class="form-check form-check-inline">
                   <input
-                    required
                     class="form-check-input"
                     v-model="sabhasadDetail.gender"
                     type="radio"
-                    @change="maleFemaleLabel = 'शकतो'"
+                    name="gender"
+                    @change="
+                      maleFemaleLabel = 'शकतो';
+                      checkValidataty($event.target);
+                    "
                     id="inlineCheckboxgender1"
                     value="male"
+                    required
                   />
                   <label class="form-check-label" for="inlineCheckboxgender1"
                     >पुरुष</label
@@ -225,15 +236,19 @@
                 </div>
                 <div class="form-check form-check-inline">
                   <input
-                    required
                     class="form-check-input"
                     v-model="sabhasadDetail.gender"
+                    name="gender"
                     type="radio"
-                    @change="maleFemaleLabel = 'शकते'"
-                    id="inlineCheckboxgender1"
+                    @change="
+                      maleFemaleLabel = 'शकते';
+                      checkValidataty($event.target);
+                    "
+                    id="inlineCheckboxgender2"
                     value="female"
+                    required
                   />
-                  <label class="form-check-label" for="inlineCheckboxgender1"
+                  <label class="form-check-label" for="inlineCheckboxgender2"
                     >महिला</label
                   >
                 </div>
@@ -244,7 +259,8 @@
                 <input
                   required
                   type="date"
-                  min="2005-01-01"
+                  @change="checkValidataty($event.target)"
+                  max="2005-01-01"
                   v-model="sabhasadDetail.dob"
                   class="form-control"
                   id="dob"
@@ -264,6 +280,8 @@
                     class="form-check-input"
                     v-model="sabhasadDetail.married"
                     type="radio"
+                    @change="checkValidataty($event.target)"
+                    name="married"
                     id="inlineCheckbox1"
                     v-bind:value="true"
                   />
@@ -273,10 +291,11 @@
                 </div>
                 <div class="form-check form-check-inline">
                   <input
-                    required
                     class="form-check-input"
                     v-model="sabhasadDetail.married"
                     type="radio"
+                    @change="checkValidataty($event.target)"
+                    name="married"
                     id="inlineCheckbox2"
                     v-bind:value="false"
                   />
@@ -291,9 +310,11 @@
                 <input
                   required
                   type="tel"
+                  @change="checkValidataty($event.target)"
                   v-model="sabhasadDetail.whatsappNumber"
                   class="form-control"
                   id="wnumber"
+                  pattern="(6|7|8|9)\d{9}"
                   placeholder="Password"
                 />
                 <label for="wnumber">व्हाट्सअँप नंबर</label>
@@ -303,9 +324,11 @@
               <div class="form-floating col">
                 <input
                   type="tel"
+                  @change="checkValidataty($event.target)"
                   v-model="sabhasadDetail.mobileNumber"
                   class="form-control"
                   id="inputPassword4"
+                  pattern="(6|7|8|9)\d{9}"
                   placeholder="Password"
                 />
                 <label for="inputPassword4" class="form-label"
@@ -319,6 +342,7 @@
                 <input
                   required
                   type="email"
+                  @change="checkValidataty($event.target)"
                   v-model="sabhasadDetail.email"
                   class="form-control"
                   id="email"
@@ -332,9 +356,11 @@
                 <input
                   required
                   type="tel"
+                  @change="checkValidataty($event.target)"
                   v-model="sabhasadDetail.aadhar"
                   class="form-control"
                   id="aadhar"
+                  pattern="\d{12}"
                   placeholder="Password"
                 />
                 <label for="aadhar" class="form-label">आधार नंबर</label>
@@ -344,1606 +370,1866 @@
         </div>
 
         <div class="tab">
-          <div class="permenant-address-area">
-            <div class="row g-1 mb-3">
-              <div class="form-floating">
-                <textarea
-                  :value="
-                    sabhasadDetail.permanentSubAddress
-                      ? sabhasadDetail.permanentSubAddress
-                      : ''
+          <form ref="basicForm2">
+            <div class="permenant-address-area">
+              <div class="row g-1 mb-3">
+                <div class="form-floating">
+                  <textarea
+                    :value="
+                      sabhasadDetail.permanentSubAddress
+                        ? sabhasadDetail.permanentSubAddress
+                        : ''
+                    "
+                    @change="
+                      onInput($event, true);
+                      checkValidataty($event.target);
+                    "
+                    class="form-control"
+                    id="permanentAddress"
+                    style="height: 60px"
+                  ></textarea>
+                  <label for="permanentAddress">कायमचा पत्ता</label>
+                </div>
+              </div>
+              <div class="row g-1 mb-3">
+                <div class="form-floating col">
+                  <select
+                    required
+                    class="form-select"
+                    v-model="sabhasadDetail.permanent_address.District"
+                    @change="
+                      loadTalukas(true, $event.target);
+                      checkValidataty($event.target);
+                    "
+                    id="pdistrict"
+                    aria-label="Floating label select example"
+                  >
+                    <option value="">select</option>
+                    <option
+                      v-for="district in districts"
+                      :key="district.District"
+                      :value="district.District"
+                    >
+                      {{ district.DistrictMr }}
+                    </option>
+                  </select>
+                  <label for="pdistrict">जिल्हा</label>
+                </div>
+              </div>
+              <div class="row g-1 mb-3">
+                <div class="form-floating col">
+                  <select
+                    required
+                    class="form-select"
+                    v-model="sabhasadDetail.permanent_address.SubDistrict"
+                    @change="
+                      loadVillages(true, $event.target);
+                      checkValidataty($event.target);
+                    "
+                    id="psubDistrict"
+                    aria-label="Floating label select example"
+                  >
+                    <option value="">select</option>
+                    <option
+                      v-for="taluka in permanentTalukasList"
+                      :key="taluka.SubDistrict"
+                      :value="taluka.SubDistrict"
+                    >
+                      {{ taluka.SubDistrictMr }}
+                    </option>
+                  </select>
+                  <label for="psubDistrict">तालुका</label>
+                </div>
+              </div>
+              <div class="row g-1 mb-3">
+                <div class="form-floating col">
+                  <select
+                    required
+                    class="form-select"
+                    v-model="sabhasadDetail.permanentVillage"
+                    @change="checkValidataty($event.target)"
+                    id="pvillage"
+                    aria-label="Floating label select example"
+                  >
+                    <option value="">select</option>
+                    <option
+                      v-for="village in permentVillageList"
+                      :key="village.AddressDirectoryID"
+                      :value="village.AddressDirectoryID"
+                    >
+                      {{ village.VillageMr }}
+                    </option>
+                  </select>
+                  <label for="pvillage">गाव</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-1 mb-3 border-gray">
+              <label class="form-check-label"> सध्याचा पत्ता </label>
+
+              <div class="form-check form-check-inline col">
+                <input
+                  required
+                  class="form-check-input"
+                  type="radio"
+                  name="isSameAddress"
+                  v-model="sabhasadDetail.isSameAddress"
+                  @change="
+                    currentAddressAvailablity();
+                    checkValidataty($event.target);
                   "
-                  @change="onInput($event, true)"
-                  class="form-control"
-                  id="permanentAddress"
-                  style="height: 60px"
-                ></textarea>
-                <label for="permanentAddress">कायमचा पत्ता</label>
+                  id="isAddressSame1"
+                  v-bind:value="true"
+                />
+                <label class="form-check-label" for="isAddressSame1">
+                  वरील प्रमाणे
+                </label>
               </div>
-            </div>
-            <div class="row g-1 mb-3">
-              <div class="form-floating col">
-                <select
-                  class="form-select"
-                  v-model="sabhasadDetail.permanent_address.District"
-                  @change="loadTalukas(true, $event.target)"
-                  id="pdistrict"
-                  aria-label="Floating label select example"
-                >
-                  <option value="">select</option>
-                  <option
-                    v-for="district in districts"
-                    :key="district.District"
-                    :value="district.District"
-                  >
-                    {{ district.DistrictMr }}
-                  </option>
-                </select>
-                <label for="pdistrict">जिल्हा</label>
-              </div>
-            </div>
-            <div class="row g-1 mb-3">
-              <div class="form-floating col">
-                <select
-                  class="form-select"
-                  v-model="sabhasadDetail.permanent_address.SubDistrict"
-                  id="psubDistrict"
-                  aria-label="Floating label select example"
-                >
-                  <option value="">select</option>
-                  <option
-                    v-for="taluka in permanentTalukasList"
-                    :key="taluka.SubDistrict"
-                    :value="taluka.SubDistrict"
-                  >
-                    {{ taluka.SubDistrictMr }}
-                  </option>
-                </select>
-                <label for="psubDistrict">तालुका</label>
-              </div>
-            </div>
-            <div class="row g-1 mb-3">
-              <div class="form-floating col">
-                <select
-                  class="form-select"
-                  v-model="sabhasadDetail.permanentVillage"
-                  id="pvillage"
-                  aria-label="Floating label select example"
-                >
-                  <option value="">select</option>
-                  <option
-                    v-for="village in permentVillageList"
-                    :key="village.AddressDirectoryID"
-                    :value="village.AddressDirectoryID"
-                  >
-                    {{ village.VillageMr }}
-                  </option>
-                </select>
-                <label for="pvillage">गाव</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="row g-1 mb-3 border-gray">
-            <label class="form-check-label"> सध्याचा पत्ता </label>
-
-            <div class="form-check form-check-inline col">
-              <input
-                required
-                class="form-check-input"
-                type="radio"
-                v-model="sabhasadDetail.isSameAddress"
-                @change="currentAddressAvailablity()"
-                id="isAddressSame1"
-                v-bind:value="true"
-              />
-              <label class="form-check-label" for="isAddressSame1">
-                वरील प्रमाणे
-              </label>
-            </div>
-            <div class="form-check form-check-inline col">
-              <input
-                required
-                class="form-check-input"
-                type="radio"
-                v-model="sabhasadDetail.isSameAddress"
-                @change="currentAddressAvailablity()"
-                id="isAddressSame2"
-                v-bind:value="false"
-              />
-              <label class="form-check-label" for="isAddressSame2">
-                वेगळा
-              </label>
-            </div>
-          </div>
-
-          <div v-if="sabhasadDetail.current_address">
-            <div class="row g-1 mb-3">
-              <div class="form-floating">
-                <textarea
-                  :value="
-                    sabhasadDetail.currentSubAddress
-                      ? sabhasadDetail.currentSubAddress
-                      : ''
+              <div class="form-check form-check-inline col">
+                <input
+                  required
+                  class="form-check-input"
+                  type="radio"
+                  v-model="sabhasadDetail.isSameAddress"
+                  @change="
+                    currentAddressAvailablity();
+                    checkValidataty($event.target);
                   "
-                  @change="onInput($event, false)"
-                  class="form-control"
-                  placeholder="सध्याचा पत्ता"
-                  id="currentAddress"
-                  style="height: 60px"
-                ></textarea>
-                <label for="currentAddress">सध्याचा पत्ता</label>
+                  name="isSameAddress"
+                  id="isAddressSame2"
+                  v-bind:value="false"
+                />
+                <label class="form-check-label" for="isAddressSame2">
+                  वेगळा
+                </label>
               </div>
             </div>
-            <div class="row g-1 mb-3">
-              <div class="form-floating col">
-                <select
-                  class="form-select"
-                  v-model="sabhasadDetail.current_address.District"
-                  id="cdistrict"
-                  aria-label="Floating label select example"
-                >
-                  <option value="">select</option>
-                  <option
-                    v-for="district in districts"
-                    :key="district.District"
-                    :value="district.District"
+
+            <div v-if="sabhasadDetail.current_address">
+              <div class="row g-1 mb-3">
+                <div class="form-floating">
+                  <textarea
+                    :value="
+                      sabhasadDetail.currentSubAddress
+                        ? sabhasadDetail.currentSubAddress
+                        : ''
+                    "
+                    @change="
+                      onInput($event, false);
+                      checkValidataty($event.target);
+                    "
+                    class="form-control"
+                    placeholder="सध्याचा पत्ता"
+                    id="currentAddress"
+                    style="height: 60px"
+                  ></textarea>
+                  <label for="currentAddress">सध्याचा पत्ता</label>
+                </div>
+              </div>
+              <div class="row g-1 mb-3">
+                <div class="form-floating col">
+                  <select
+                    required
+                    class="form-select"
+                    v-model="sabhasadDetail.current_address.District"
+                    @change="
+                      loadTalukas(false, $event.target);
+                      checkValidataty($event.target);
+                    "
+                    id="cdistrict"
+                    aria-label="Floating label select example"
                   >
-                    {{ district.DistrictMr }}
-                  </option>
-                </select>
-                <label for="cdistrict">जिल्हा</label>
+                    <option value="">select</option>
+                    <option
+                      v-for="district in districts"
+                      :key="district.District"
+                      :value="district.District"
+                    >
+                      {{ district.DistrictMr }}
+                    </option>
+                  </select>
+                  <label for="cdistrict">जिल्हा</label>
+                </div>
               </div>
-            </div>
-            <div class="row g-1 mb-3">
-              <div class="form-floating col">
-                <select
-                  class="form-select"
-                  v-model="sabhasadDetail.current_address.SubDistrict"
-                  id="csubDistrict"
-                  aria-label="Floating label select example"
-                >
-                  <option value="">select</option>
-                  <option
-                    v-for="taluka in currentTalukasList"
-                    :key="taluka.SubDistrict"
-                    :value="taluka.SubDistrict"
+              <div class="row g-1 mb-3">
+                <div class="form-floating col">
+                  <select
+                    required
+                    class="form-select"
+                    v-model="sabhasadDetail.current_address.SubDistrict"
+                    @change="
+                      loadVillages(false, $event.target);
+                      checkValidataty($event.target);
+                    "
+                    id="csubDistrict"
+                    aria-label="Floating label select example"
                   >
-                    {{ taluka.SubDistrictMr }}
-                  </option>
-                </select>
-                <label for="csubDistrict">तालुका</label>
+                    <option value="">select</option>
+                    <option
+                      v-for="taluka in currentTalukasList"
+                      :key="taluka.SubDistrict"
+                      :value="taluka.SubDistrict"
+                    >
+                      {{ taluka.SubDistrictMr }}
+                    </option>
+                  </select>
+                  <label for="csubDistrict">तालुका</label>
+                </div>
               </div>
-            </div>
-            <div class="row g-1 mb-3">
-              <div class="form-floating col">
-                <select
-                  class="form-select"
-                  name="cvillage"
-                  v-model="sabhasadDetail.currentVillage"
-                  aria-label="Floating label select example"
-                >
-                  <option value="">select</option>
-                  <option
-                    v-for="village in currentVillageList"
-                    :key="village.AddressDirectoryID"
-                    :value="village.AddressDirectoryID"
+              <div class="row g-1 mb-3">
+                <div class="form-floating col">
+                  <select
+                    required
+                    class="form-select"
+                    name="cvillage"
+                    v-model="sabhasadDetail.currentVillage"
+                    @change="checkValidataty($event.target)"
+                    id="cvillage"
+                    aria-label="Floating label select example"
                   >
-                    {{ village.VillageMr }}
-                  </option>
-                </select>
-                <label for="cvillage">गाव</label>
+                    <option value="">select</option>
+                    <option
+                      v-for="village in currentVillageList"
+                      :key="village.AddressDirectoryID"
+                      :value="village.AddressDirectoryID"
+                    >
+                      {{ village.VillageMr }}
+                    </option>
+                  </select>
+                  <label for="cvillage">गाव</label>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
 
         <div class="tab">
-          <div class="row g-1 mb-3">
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.education_data.educationClass"
-                @change="clearEducationData()"
-                class="form-control"
-                id="educationClass"
-                placeholder="Password"
-                list="education"
-              />
-              <label for="educationClass">शिक्षण</label>
+          <form ref="basicForm3">
+            <div class="row g-1 mb-3">
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  v-model="sabhasadDetail.education_data.educationClass"
+                  @change="
+                    clearEducationData();
+                    checkValidataty($event.target);
+                  "
+                  class="form-control"
+                  id="educationClass"
+                  placeholder="Password"
+                  list="education"
+                />
+                <label for="educationClass">शिक्षण</label>
+              </div>
             </div>
-          </div>
-          <div v-if="sabhasadDetail.education_data.educationClass">
+            <div v-if="sabhasadDetail.education_data.educationClass">
+              <div
+                class="row g-1 mb-3"
+                v-if="sabhasadDetail.education_data.educationClass == 'ITI'"
+              >
+                <div class="form-floating col">
+                  <input
+                    required
+                    type="text"
+                    @change="checkValidataty($event.target)"
+                    v-model="sabhasadDetail.education_data.educationITIBranch"
+                    class="form-control"
+                    id="educationITIBranch"
+                    placeholder="Password"
+                  />
+                  <label for="educationITIBranch">ITI शाखा</label>
+                </div>
+              </div>
+
+              <div v-if="sabhasadDetail.education_data.educationClass == 'PHD'">
+                <div class="row g-1 mb-3">
+                  <div class="form-floating col">
+                    <input
+                      required
+                      type="text"
+                      @change="checkValidataty($event.target)"
+                      v-model="sabhasadDetail.education_data.phdArea"
+                      class="form-control"
+                      id="phdArea"
+                      placeholder="Password"
+                    />
+                    <label for="phdArea"
+                      >PHD क्षेत्र (जसे कि कला, वाणिज्य, वैद्यकिय...)</label
+                    >
+                  </div>
+                </div>
+
+                <div class="row g-1 mb-3">
+                  <div class="form-floating col">
+                    <input
+                      required
+                      type="text"
+                      @change="checkValidataty($event.target)"
+                      v-model="sabhasadDetail.education_data.phdMainSubject"
+                      class="form-control"
+                      id="phdMainSubject"
+                      placeholder="Password"
+                    />
+                    <label for="phdMainSubject">PHD मुख्य विषय</label>
+                  </div>
+                </div>
+
+                <div class="row g-1 mb-3">
+                  <div class="form-floating col">
+                    <input
+                      required
+                      type="text"
+                      @change="checkValidataty($event.target)"
+                      v-model="sabhasadDetail.education_data.phdResearchDetail"
+                      class="form-control"
+                      id="phdResearchDetail"
+                      placeholder="Password"
+                    />
+                    <label for="phdResearchDetail"
+                      >संशोधनाविषयी थोडक्यात माहिती</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div
+                v-if="
+                  ['Post Graduate', 'Graduate', 'Diploma'].includes(
+                    sabhasadDetail.education_data.educationClass
+                  )
+                "
+              >
+                <div class="row g-1 mb-3">
+                  <label>
+                    {{ sabhasadDetail.education_data.educationClass }}
+                    प्रकार</label
+                  >
+                </div>
+                <div class="row g-1 mb-3">
+                  <div class="form-check form-check-inline">
+                    <input
+                      required
+                      type="radio"
+                      @change="
+                        clearEducationDegreeType();
+                        checkValidataty($event.target);
+                      "
+                      v-model="
+                        sabhasadDetail.education_data.educationDegreeType
+                      "
+                      class="form-check-input"
+                      name="educationDegreeType"
+                      id="educationDegreeType1"
+                      value="professional"
+                    />
+                    <label for="educationDegreeType1"
+                      >व्यवसायिक(अभियांत्रिकी, वैद्यकिय, कृषी इत्यादी)</label
+                    >
+                  </div>
+                </div>
+                <div class="row g-1 mb-3">
+                  <div class="form-check form-check-inline">
+                    <input
+                      required
+                      type="radio"
+                      @change="
+                        clearEducationDegreeType();
+                        checkValidataty($event.target);
+                      "
+                      :disabled="
+                        sabhasadDetail.education_data.educationClass ==
+                        'Diploma'
+                      "
+                      v-model="
+                        sabhasadDetail.education_data.educationDegreeType
+                      "
+                      class="form-check-input"
+                      name="educationDegreeType"
+                      id="educationDegreeType2"
+                      value="nonProfessional"
+                    />
+                    <label for="educationDegreeType2"
+                      >अव्यवसायिक(कला, वाणिज्य, विज्ञान इत्यादी)</label
+                    >
+                  </div>
+                </div>
+
+                <div
+                  v-if="
+                    sabhasadDetail.education_data.educationDegreeType ==
+                    'nonProfessional'
+                  "
+                >
+                  <div class="row g-1 mb-3 border-gray">
+                    <div class="col-12">
+                      <div class="form-check form-check-inline">
+                        <input
+                          required
+                          class="form-check-input"
+                          v-model="
+                            sabhasadDetail.education_data.educationDegreeBranch
+                          "
+                          type="radio"
+                          @change="checkValidataty($event.target)"
+                          name="educationDegreeBranch"
+                          id="educationDegreeBranch1"
+                          value="Art"
+                        />
+                        <label
+                          for="educationDegreeBranch1"
+                          class="form-check-label"
+                          >कला</label
+                        >
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          required
+                          class="form-check-input"
+                          v-model="
+                            sabhasadDetail.education_data.educationDegreeBranch
+                          "
+                          type="radio"
+                          @change="checkValidataty($event.target)"
+                          name="educationDegreeBranch"
+                          id="educationDegreeBranch2"
+                          value="Commerce"
+                        />
+                        <label
+                          class="form-check-label"
+                          for="educationDegreeBranch2"
+                          >वाणिज्य</label
+                        >
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          required
+                          class="form-check-input"
+                          v-model="
+                            sabhasadDetail.education_data.educationDegreeBranch
+                          "
+                          type="radio"
+                          @change="checkValidataty($event.target)"
+                          name="educationDegreeBranch"
+                          id="educationDegreeBranch3"
+                          value="Science"
+                        />
+                        <label
+                          for="educationDegreeBranch3"
+                          class="form-check-label"
+                          >विज्ञान</label
+                        >
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          required
+                          class="form-check-input"
+                          v-model="
+                            sabhasadDetail.education_data.educationDegreeBranch
+                          "
+                          type="radio"
+                          @change="checkValidataty($event.target)"
+                          name="educationDegreeBranch"
+                          id="educationDegreeBranch4"
+                          value="Other"
+                        />
+                        <label
+                          class="form-check-label"
+                          for="educationDegreeBranch4"
+                          >इतर</label
+                        >
+                      </div>
+                      <div
+                        class="form-floating"
+                        v-if="
+                          sabhasadDetail.education_data.educationDegreeBranch ==
+                          'Other'
+                        "
+                      >
+                        <input
+                          required
+                          type="text"
+                          @change="checkValidataty($event.target)"
+                          v-model="
+                            sabhasadDetail.education_data
+                              .educationDegreeBranchOther
+                          "
+                          class="form-control"
+                          id="educationDegreeBranchOther"
+                        />
+                        <label
+                          for="educationDegreeBranchOther"
+                          class="form-check-label"
+                          >इतर शाखेचे नाव(उदा. MCVC)</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  v-if="
+                    sabhasadDetail.education_data.educationDegreeType ==
+                    'professional'
+                  "
+                >
+                  <div class="row g-1 mb-3 border-gray">
+                    <div class="col-12">
+                      <div class="form-check form-check-inline">
+                        <input
+                          required
+                          type="radio"
+                          @change="
+                            clearEducationEngBranch();
+                            checkValidataty($event.target);
+                          "
+                          v-model="
+                            sabhasadDetail.education_data.educationDegreeArea
+                          "
+                          class="form-check-input"
+                          name="educationDegreeArea"
+                          id="educationDegreeArea"
+                          value="engineering"
+                        />
+                        <label
+                          for="educationDegreeArea"
+                          class="form-check-label"
+                          >अभियांत्रिकी</label
+                        >
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          required
+                          type="radio"
+                          @change="
+                            clearEducationEngBranch();
+                            checkValidataty($event.target);
+                          "
+                          v-model="
+                            sabhasadDetail.education_data.educationDegreeArea
+                          "
+                          class="form-check-input"
+                          id="educationDegreeArea2"
+                          name="educationDegreeArea"
+                          value="medical"
+                        />
+                        <label
+                          for="educationDegreeArea2"
+                          class="form-check-label"
+                          >वैद्यकिय</label
+                        >
+                      </div>
+
+                      <div class="form-check form-check-inline">
+                        <input
+                          required
+                          type="radio"
+                          @change="
+                            clearEducationEngBranch();
+                            checkValidataty($event.target);
+                          "
+                          v-model="
+                            sabhasadDetail.education_data.educationDegreeArea
+                          "
+                          class="form-check-input"
+                          name="educationDegreeArea"
+                          id="educationDegreeArea3"
+                          value="management"
+                        />
+                        <label
+                          for="educationDegreeArea3"
+                          class="form-check-label"
+                          >व्यवस्थापण</label
+                        >
+                      </div>
+
+                      <div class="form-check form-check-inline">
+                        <input
+                          required
+                          type="radio"
+                          @change="
+                            clearEducationEngBranch();
+                            checkValidataty($event.target);
+                          "
+                          v-model="
+                            sabhasadDetail.education_data.educationDegreeArea
+                          "
+                          class="form-check-input"
+                          name="educationDegreeArea"
+                          id="educationDegreeArea4"
+                          value="agri"
+                        />
+                        <label
+                          for="educationDegreeArea4"
+                          class="form-check-label"
+                          >कृषी</label
+                        >
+                      </div>
+
+                      <div class="form-check form-check-inline">
+                        <input
+                          required
+                          type="radio"
+                          @change="
+                            clearEducationEngBranch();
+                            checkValidataty($event.target);
+                          "
+                          v-model="
+                            sabhasadDetail.education_data.educationDegreeArea
+                          "
+                          class="form-check-input"
+                          name="educationDegreeArea"
+                          id="educationDegreeArea5"
+                          value="low"
+                        />
+                        <label
+                          for="educationDegreeArea5"
+                          class="form-check-label"
+                          >कायदेविषयक</label
+                        >
+                      </div>
+
+                      <div class="form-check form-check-inline">
+                        <input
+                          required
+                          type="radio"
+                          @change="
+                            clearEducationEngBranch();
+                            checkValidataty($event.target);
+                          "
+                          v-model="
+                            sabhasadDetail.education_data.educationDegreeArea
+                          "
+                          class="form-check-input"
+                          name="educationDegreeArea"
+                          id="educationDegreeArea6"
+                          value="Other"
+                        />
+                        <label
+                          for="educationDegreeArea6"
+                          class="form-check-label"
+                          >इतर</label
+                        >
+                      </div>
+
+                      <div
+                        class="form-floating"
+                        v-if="
+                          sabhasadDetail.education_data.educationDegreeArea ==
+                          'Other'
+                        "
+                      >
+                        <input
+                          required
+                          type="text"
+                          @change="checkValidataty($event.target)"
+                          v-model="
+                            sabhasadDetail.education_data
+                              .educationDegreeAreaOther
+                          "
+                          class="form-control"
+                          id="educationDegreeAreaOther"
+                        />
+                        <label for="educationDegreeAreaOther">इतर कोणते</label>
+                      </div>
+                      <div
+                        class="form-floating"
+                        v-if="
+                          sabhasadDetail.education_data.educationDegreeArea ==
+                          'engineering'
+                        "
+                      >
+                        <input
+                          required
+                          type="text"
+                          @change="checkValidataty($event.target)"
+                          v-model="
+                            sabhasadDetail.education_data
+                              .educationBranchEngineering
+                          "
+                          class="form-control"
+                          id="educationBranchEngineering"
+                        />
+                        <label for="educationBranchEngineering"
+                          >अभियांत्रिकी शाखा?(उदा. विद्युत, स्थापत्य, संगणक,
+                          इत्यादी)</label
+                        >
+                      </div>
+                      <div class="form-floating" v-else>
+                        <input
+                          required
+                          @change="checkValidataty($event.target)"
+                          type="text"
+                          v-model="
+                            sabhasadDetail.education_data
+                              .educationDegreeNonEngineering
+                          "
+                          class="form-control"
+                          id="educationDegreeNonEngineering"
+                        />
+                        <label for="educationDegreeNonEngineering"
+                          >Degree?(उदा. B.H.M.S., M.B.A., इत्यादी)</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row g-1 mb-3 border-gray">
+              <div class="col-12">
+                <label>शिक्षण पुर्ण झाले कि चालू आहे?</label>
+              </div>
+              <div class="col-12">
+                <div class="form-check form-check-inline">
+                  <input
+                    required
+                    class="form-check-input"
+                    v-model="sabhasadDetail.education_data.isEducationCompleted"
+                    type="radio"
+                    @change="checkValidataty($event.target)"
+                    name="isEducationCompleted"
+                    id="isEducationCompleted"
+                    v-bind:value="true"
+                  />
+                  <label class="form-check-label" for="isEducationCompleted"
+                    >पुर्ण झाले.</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    required
+                    class="form-check-input"
+                    v-model="sabhasadDetail.education_data.isEducationCompleted"
+                    type="radio"
+                    @change="checkValidataty($event.target)"
+                    name="isEducationCompleted"
+                    id="isEducationCompleted1"
+                    v-bind:value="false"
+                  />
+                  <label class="form-check-label" for="isEducationCompleted1"
+                    >चालू आहे.</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-1 mb-3 border-gray">
+              <div class="col-12">
+                <label>तुम्ही स्पर्धा परिक्षाची तयारी करत आहात का?</label>
+              </div>
+              <div class="col-12">
+                <div class="form-check form-check-inline">
+                  <input
+                    required
+                    class="form-check-input"
+                    v-model="sabhasadDetail.competitiveCandidate"
+                    type="radio"
+                    @change="checkValidataty($event.target)"
+                    name="competitiveCandidate"
+                    id="competitiveCandidate"
+                    v-bind:value="true"
+                  />
+                  <label class="form-check-label" for="competitiveCandidate"
+                    >होय</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    required
+                    class="form-check-input"
+                    @change="
+                      sabhasadDetail.competitiveExamName = null;
+                      checkValidataty($event.target);
+                    "
+                    v-model="sabhasadDetail.competitiveCandidate"
+                    type="radio"
+                    name="competitiveCandidate"
+                    id="competitiveCandidate1"
+                    v-bind:value="false"
+                  />
+                  <label class="form-check-label" for="competitiveCandidate1"
+                    >नाही.</label
+                  >
+                </div>
+                <div
+                  class="form-floating"
+                  v-if="sabhasadDetail.competitiveCandidate"
+                >
+                  <input
+                    required
+                    type="text"
+                    @change="checkValidataty($event.target)"
+                    v-model="sabhasadDetail.competitiveExamName"
+                    class="form-control"
+                    id="competitiveExamName"
+                  />
+                  <label for="competitiveExamName" class="form-check-label"
+                    >स्पर्धा परिक्षेचे नाव?(उदा. UPSC, MPSC, पोलिस भरती,
+                    इत्यादी)</label
+                  >
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="tab">
+          <form ref="basicForm4">
+            <div class="row g-1 mb-3 border-gray">
+              <div class="col-12">
+                <label>व्यवसाय:</label>
+              </div>
+              <fieldset class="col-12" required>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.employee_data.employmentType"
+                    @change="
+                      clearEmployeeBusiness();
+                      checkValidataty($event.target);
+                    "
+                    type="checkbox"
+                    id="employmentType"
+                    value="Self Business"
+                  />
+                  <label class="form-check-label" for="employmentType"
+                    >स्वतः चा व्यवसाय</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.employee_data.employmentType"
+                    @change="
+                      sabhasadDetail.employee_data.traderArea = null;
+                      checkValidataty($event.target);
+                    "
+                    type="checkbox"
+                    id="employmentType1"
+                    value="Trader"
+                  />
+                  <label class="form-check-label" for="employmentType1"
+                    >व्यापारी</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.employee_data.employmentType"
+                    @change="
+                      clearEmployeeEmployee();
+                      checkValidataty($event.target);
+                    "
+                    type="checkbox"
+                    id="employmentType2"
+                    value="Employee"
+                  />
+                  <label class="form-check-label" for="employmentType2"
+                    >नौकरी</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.employee_data.employmentType"
+                    @change="
+                      clearEmployeeAgri();
+                      checkValidataty($event.target);
+                    "
+                    type="checkbox"
+                    id="employmentType3"
+                    value="Agriculture"
+                  />
+                  <label class="form-check-label" for="employmentType3"
+                    >शेती</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.employee_data.employmentType"
+                    type="checkbox"
+                    @change="checkValidataty($event.target)"
+                    id="employmentType4"
+                    value="UnEmployment"
+                  />
+                  <label class="form-check-label" for="employmentType4"
+                    >काहिही नाही</label
+                  >
+                </div>
+              </fieldset>
+            </div>
             <div
               class="row g-1 mb-3"
-              v-if="sabhasadDetail.education_data.educationClass == 'ITI'"
+              v-if="
+                sabhasadDetail.employee_data.employmentType.includes(
+                  'Self Business'
+                )
+              "
             >
               <div class="form-floating col">
                 <input
                   required
                   type="text"
-                  v-model="sabhasadDetail.education_data.educationITIBranch"
+                  v-model="sabhasadDetail.employee_data.businessArea"
+                  @change="
+                    clearEmployeeBusinessArea();
+                    checkValidataty($event.target);
+                  "
                   class="form-control"
-                  id="educationITIBranch"
-                  placeholder="Password"
+                  id="businessArea"
+                  placeholder="email"
+                  list="businessList"
                 />
-                <label for="educationITIBranch">ITI शाखा</label>
+                <label for="businessArea">व्यवसायिक क्षेत्र?</label>
               </div>
             </div>
-
-            <div v-if="sabhasadDetail.education_data.educationClass == 'PHD'">
-              <div class="row g-1 mb-3">
-                <div class="form-floating col">
-                  <input
-                    required
-                    type="text"
-                    v-model="sabhasadDetail.education_data.phdArea"
-                    class="form-control"
-                    id="phdArea"
-                    placeholder="Password"
-                  />
-                  <label for="phdArea"
-                    >PHD क्षेत्र (जसे कि कला, वाणिज्य, वैद्यकिय...)</label
-                  >
-                </div>
-              </div>
-
-              <div class="row g-1 mb-3">
-                <div class="form-floating col">
-                  <input
-                    required
-                    type="text"
-                    v-model="sabhasadDetail.education_data.phdMainSubject"
-                    class="form-control"
-                    id="phdMainSubject"
-                    placeholder="Password"
-                  />
-                  <label for="phdMainSubject">PHD मुख्य विषय</label>
-                </div>
-              </div>
-
-              <div class="row g-1 mb-3">
-                <div class="form-floating col">
-                  <input
-                    required
-                    type="text"
-                    v-model="sabhasadDetail.education_data.phdResearchDetail"
-                    class="form-control"
-                    id="phdResearchDetail"
-                    placeholder="Password"
-                  />
-                  <label for="phdResearchDetail"
-                    >संशोधनाविषयी थोडक्यात माहिती</label
-                  >
-                </div>
-              </div>
-            </div>
-
             <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.employee_data.businessArea == 'वैद्यकीय'"
+            >
+              <div class="form-floating col">
+                <select
+                  required
+                  class="form-select"
+                  v-model="sabhasadDetail.employee_data.businessmedicalSubArea"
+                  @change="
+                    sabhasadDetail.employee_data.businessDoctorSpecilization =
+                      null;
+                    checkValidataty($event.target);
+                  "
+                  id="businessmedicalSubArea"
+                  aria-label="Floating label select example"
+                >
+                  <option value="">select</option>
+                  <option value="Hospital">दवाखाना</option>
+                  <option value="Medical">मेडिकल</option>
+                  <option value="Lab">लॅब</option>
+                  <option value="Other">इतर</option>
+                </select>
+                <label for="businessmedicalSubArea">वैद्यकीय उपक्षेत्र</label>
+              </div>
+            </div>
+            <div
+              class="row g-1 mb-3"
               v-if="
-                ['Post Graduate', 'Graduate', 'Diploma'].includes(
-                  sabhasadDetail.education_data.educationClass
-                )
+                sabhasadDetail.employee_data.businessmedicalSubArea ==
+                'Hospital'
               "
             >
-              <div class="row g-1 mb-3">
-                <label>
-                  {{ sabhasadDetail.education_data.educationClass }}
-                  प्रकार</label
-                >
-              </div>
-              <div class="row g-1 mb-3">
-                <div class="form-check form-check-inline">
-                  <input
-                    required
-                    type="radio"
-                    @change="clearEducationDegreeType()"
-                    v-model="sabhasadDetail.education_data.educationDegreeType"
-                    class="form-check-input"
-                    id="educationDegreeType1"
-                    value="professional"
-                  />
-                  <label for="educationDegreeType1"
-                    >व्यवसायिक(अभियांत्रिकी, वैद्यकिय, कृषी इत्यादी)</label
-                  >
-                </div>
-              </div>
-              <div class="row g-1 mb-3">
-                <div class="form-check form-check-inline">
-                  <input
-                    required
-                    type="radio"
-                    @change="clearEducationDegreeType()"
-                    :disabled="
-                      sabhasadDetail.education_data.educationClass == 'Diploma'
-                    "
-                    v-model="sabhasadDetail.education_data.educationDegreeType"
-                    class="form-check-input"
-                    id="educationDegreeType2"
-                    value="nonProfessional"
-                  />
-                  <label for="educationDegreeType2"
-                    >अव्यवसायिक(कला, वाणिज्य, विज्ञान इत्यादी)</label
-                  >
-                </div>
-              </div>
-
-              <div
-                v-if="
-                  sabhasadDetail.education_data.educationDegreeType ==
-                  'nonProfessional'
-                "
-              >
-                <div class="row g-1 mb-3 border-gray">
-                  <div class="col-12">
-                    <div class="form-check form-check-inline">
-                      <input
-                        required
-                        class="form-check-input"
-                        v-model="
-                          sabhasadDetail.education_data.educationDegreeBranch
-                        "
-                        type="radio"
-                        id="educationDegreeBranch1"
-                        value="Art"
-                      />
-                      <label
-                        for="educationDegreeBranch1"
-                        class="form-check-label"
-                        >कला</label
-                      >
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input
-                        required
-                        class="form-check-input"
-                        v-model="
-                          sabhasadDetail.education_data.educationDegreeBranch
-                        "
-                        type="radio"
-                        id="educationDegreeBranch2"
-                        value="Commerce"
-                      />
-                      <label
-                        class="form-check-label"
-                        for="educationDegreeBranch2"
-                        >वाणिज्य</label
-                      >
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input
-                        required
-                        class="form-check-input"
-                        v-model="
-                          sabhasadDetail.education_data.educationDegreeBranch
-                        "
-                        type="radio"
-                        id="educationDegreeBranch3"
-                        value="Science"
-                      />
-                      <label
-                        for="educationDegreeBranch3"
-                        class="form-check-label"
-                        >विज्ञान</label
-                      >
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input
-                        required
-                        class="form-check-input"
-                        v-model="
-                          sabhasadDetail.education_data.educationDegreeBranch
-                        "
-                        type="radio"
-                        id="educationDegreeBranch4"
-                        value="Other"
-                      />
-                      <label
-                        class="form-check-label"
-                        for="educationDegreeBranch4"
-                        >इतर</label
-                      >
-                    </div>
-                    <div
-                      class="form-floating"
-                      v-if="
-                        sabhasadDetail.education_data.educationDegreeBranch ==
-                        'Other'
-                      "
-                    >
-                      <input
-                        required
-                        type="text"
-                        v-model="
-                          sabhasadDetail.education_data
-                            .educationDegreeBranchOther
-                        "
-                        class="form-control"
-                        id="educationDegreeBranchOther"
-                      />
-                      <label
-                        for="educationDegreeBranchOther"
-                        class="form-check-label"
-                        >इतर शाखेचे नाव(उदा. MCVC)</label
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                v-if="
-                  sabhasadDetail.education_data.educationDegreeType ==
-                  'professional'
-                "
-              >
-                <div class="row g-1 mb-3 border-gray">
-                  <div class="col-12">
-                    <div class="form-check form-check-inline">
-                      <input
-                        required
-                        type="radio"
-                        @change="clearEducationEngBranch()"
-                        v-model="
-                          sabhasadDetail.education_data.educationDegreeArea
-                        "
-                        class="form-check-input"
-                        id="educationDegreeArea"
-                        value="engineering"
-                      />
-                      <label for="educationDegreeArea" class="form-check-label"
-                        >अभियांत्रिकी</label
-                      >
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input
-                        required
-                        type="radio"
-                        @change="clearEducationEngBranch()"
-                        v-model="
-                          sabhasadDetail.education_data.educationDegreeArea
-                        "
-                        class="form-check-input"
-                        id="educationDegreeArea2"
-                        value="medical"
-                      />
-                      <label for="educationDegreeArea2" class="form-check-label"
-                        >वैद्यकिय</label
-                      >
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                      <input
-                        required
-                        type="radio"
-                        @change="clearEducationEngBranch()"
-                        v-model="
-                          sabhasadDetail.education_data.educationDegreeArea
-                        "
-                        class="form-check-input"
-                        id="educationDegreeArea3"
-                        value="management"
-                      />
-                      <label for="educationDegreeArea3" class="form-check-label"
-                        >व्यवस्थापण</label
-                      >
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                      <input
-                        required
-                        type="radio"
-                        @change="clearEducationEngBranch()"
-                        v-model="
-                          sabhasadDetail.education_data.educationDegreeArea
-                        "
-                        class="form-check-input"
-                        id="educationDegreeArea4"
-                        value="agri"
-                      />
-                      <label for="educationDegreeArea4" class="form-check-label"
-                        >कृषी</label
-                      >
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                      <input
-                        required
-                        type="radio"
-                        @change="clearEducationEngBranch()"
-                        v-model="
-                          sabhasadDetail.education_data.educationDegreeArea
-                        "
-                        class="form-check-input"
-                        id="educationDegreeArea5"
-                        value="low"
-                      />
-                      <label for="educationDegreeArea5" class="form-check-label"
-                        >कायदेविषयक</label
-                      >
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                      <input
-                        required
-                        type="radio"
-                        @change="clearEducationEngBranch()"
-                        v-model="
-                          sabhasadDetail.education_data.educationDegreeArea
-                        "
-                        class="form-check-input"
-                        id="educationDegreeArea6"
-                        value="Other"
-                      />
-                      <label for="educationDegreeArea6" class="form-check-label"
-                        >इतर</label
-                      >
-                    </div>
-
-                    <div
-                      class="form-floating"
-                      v-if="
-                        sabhasadDetail.education_data.educationDegreeArea ==
-                        'Other'
-                      "
-                    >
-                      <input
-                        required
-                        type="text"
-                        v-model="
-                          sabhasadDetail.education_data.educationDegreeAreaOther
-                        "
-                        class="form-control"
-                        id="educationDegreeAreaOther"
-                      />
-                      <label for="educationDegreeAreaOther">इतर कोणते</label>
-                    </div>
-                    <div
-                      class="form-floating"
-                      v-if="
-                        sabhasadDetail.education_data.educationDegreeArea ==
-                        'engineering'
-                      "
-                    >
-                      <input
-                        required
-                        type="text"
-                        v-model="
-                          sabhasadDetail.education_data
-                            .educationBranchEngineering
-                        "
-                        class="form-control"
-                        id="educationBranchEngineering"
-                      />
-                      <label for="educationBranchEngineering"
-                        >अभियांत्रिकी शाखा?(उदा. विद्युत, स्थापत्य, संगणक,
-                        इत्यादी)</label
-                      >
-                    </div>
-                    <div class="form-floating" v-else>
-                      <input
-                        required
-                        type="text"
-                        v-model="
-                          sabhasadDetail.education_data
-                            .educationDegreeNonEngineering
-                        "
-                        class="form-control"
-                        id="educationDegreeNonEngineering"
-                      />
-                      <label for="educationDegreeNonEngineering"
-                        >Degree?(उदा. B.H.M.S., M.B.A., इत्यादी)</label
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row g-1 mb-3 border-gray">
-            <div class="col-12">
-              <label>शिक्षण पुर्ण झाले कि चालू आहे?</label>
-            </div>
-            <div class="col-12">
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.education_data.isEducationCompleted"
-                  type="radio"
-                  id="isEducationCompleted"
-                  v-bind:value="true"
-                />
-                <label class="form-check-label" for="isEducationCompleted"
-                  >पुर्ण झाले.</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.education_data.isEducationCompleted"
-                  type="radio"
-                  id="isEducationCompleted1"
-                  v-bind:value="false"
-                />
-                <label class="form-check-label" for="isEducationCompleted1"
-                  >चालू आहे.</label
-                >
-              </div>
-            </div>
-          </div>
-
-          <div class="row g-1 mb-3 border-gray">
-            <div class="col-12">
-              <label>तुम्ही स्पर्धा परिक्षाची तयारी करत आहात का?</label>
-            </div>
-            <div class="col-12">
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.competitiveCandidate"
-                  type="radio"
-                  id="competitiveCandidate"
-                  v-bind:value="true"
-                />
-                <label class="form-check-label" for="competitiveCandidate"
-                  >होय</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  @change="sabhasadDetail.competitiveExamName = null"
-                  v-model="sabhasadDetail.competitiveCandidate"
-                  type="radio"
-                  id="competitiveCandidate1"
-                  v-bind:value="false"
-                />
-                <label class="form-check-label" for="competitiveCandidate1"
-                  >नाही.</label
-                >
-              </div>
-              <div
-                class="form-floating"
-                v-if="sabhasadDetail.competitiveCandidate"
-              >
+              <div class="form-floating col">
                 <input
                   required
                   type="text"
-                  v-model="sabhasadDetail.competitiveExamName"
+                  @change="checkValidataty($event.target)"
+                  v-model="
+                    sabhasadDetail.employee_data.businessDoctorSpecilization
+                  "
                   class="form-control"
-                  id="competitiveExamName"
+                  id="businessDoctorSpecilization"
+                  placeholder="email"
                 />
-                <label for="competitiveExamName" class="form-check-label"
-                  >स्पर्धा परिक्षेचे नाव?(उदा. UPSC, MPSC, पोलिस भरती,
+                <label for="businessDoctorSpecilization"
+                  >आपण कोणत्या क्षेत्रात विशेषज्ञ आहात?(जसे बालरोग तज्ञ, ENT,
+                  प्राणीरोग तज्ञ)</label
+                >
+              </div>
+            </div>
+            <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.employee_data.businessArea == 'अभियांत्रिकी'"
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="
+                    sabhasadDetail.employee_data.businessEngineeringBranch
+                  "
+                  class="form-control"
+                  id="businessEngineeringBranch"
+                  placeholder="email"
+                />
+                <label for="businessEngineeringBranch"
+                  >अभियांत्रिकी शाखा?(उदा. स्थापत्य, संगणक, विद्युत,
                   इत्यादी)</label
                 >
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="tab">
-          <div class="row g-1 mb-3 border-gray">
-            <div class="col-12">
-              <label>व्यवसाय:</label>
-            </div>
-            <div class="col-12">
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.employee_data.employmentType"
-                  @change="clearEmployeeBusiness()"
-                  type="checkbox"
-                  id="employmentType"
-                  value="Self Business"
-                />
-                <label class="form-check-label" for="employmentType"
-                  >स्वतः चा व्यवसाय</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.employee_data.employmentType"
-                  @change="sabhasadDetail.employee_data.traderArea = null"
-                  type="checkbox"
-                  id="employmentType1"
-                  value="Trader"
-                />
-                <label class="form-check-label" for="employmentType1"
-                  >व्यापारी</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.employee_data.employmentType"
-                  @change="clearEmployeeEmployee()"
-                  type="checkbox"
-                  id="employmentType2"
-                  value="Employee"
-                />
-                <label class="form-check-label" for="employmentType2"
-                  >नौकरी</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.employee_data.employmentType"
-                  @change="clearEmployeeAgri()"
-                  type="checkbox"
-                  id="employmentType3"
-                  value="Agriculture"
-                />
-                <label class="form-check-label" for="employmentType3"
-                  >शेती</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.employee_data.employmentType"
-                  type="checkbox"
-                  id="employmentType4"
-                  value="UnEmployment"
-                />
-                <label class="form-check-label" for="employmentType4"
-                  >काहिही नाही</label
-                >
-              </div>
-            </div>
-          </div>
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.employmentType.includes(
-                'Self Business'
-              )
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.employee_data.businessArea"
-                @change="clearEmployeeBusinessArea()"
-                class="form-control"
-                id="businessArea"
-                placeholder="email"
-                list="businessList"
-              />
-              <label for="businessArea">व्यवसायिक क्षेत्र?</label>
-            </div>
-          </div>
-          <div
-            class="row g-1 mb-3"
-            v-if="sabhasadDetail.employee_data.businessArea == 'वैद्यकीय'"
-          >
-            <div class="form-floating col">
-              <select
-                class="form-select"
-                v-model="sabhasadDetail.employee_data.businessmedicalSubArea"
-                @change="
-                  sabhasadDetail.employee_data.businessDoctorSpecilization =
-                    null
-                "
-                id="businessmedicalSubArea"
-                aria-label="Floating label select example"
-              >
-                <option value="">select</option>
-                <option value="Hospital">दवाखाना</option>
-                <option value="Medical">मेडिकल</option>
-                <option value="Lab">लॅब</option>
-                <option value="Other">इतर</option>
-              </select>
-              <label for="businessmedicalSubArea">वैद्यकीय उपक्षेत्र</label>
-            </div>
-          </div>
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.businessmedicalSubArea == 'Hospital'
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="
-                  sabhasadDetail.employee_data.businessDoctorSpecilization
-                "
-                class="form-control"
-                id="businessDoctorSpecilization"
-                placeholder="email"
-              />
-              <label for="businessDoctorSpecilization"
-                >आपण कोणत्या क्षेत्रात विशेषज्ञ आहात?(जसे बालरोग तज्ञ, ENT,
-                प्राणीरोग तज्ञ)</label
-              >
-            </div>
-          </div>
-          <div
-            class="row g-1 mb-3"
-            v-if="sabhasadDetail.employee_data.businessArea == 'अभियांत्रिकी'"
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.employee_data.businessEngineeringBranch"
-                class="form-control"
-                id="businessEngineeringBranch"
-                placeholder="email"
-              />
-              <label for="businessEngineeringBranch"
-                >अभियांत्रिकी शाखा?(उदा. स्थापत्य, संगणक, विद्युत,
-                इत्यादी)</label
-              >
-            </div>
-          </div>
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.businessArea == 'शैक्षणिक क्षेत्र'
-            "
-          >
-            <div class="form-floating col">
-              <select
-                class="form-select"
-                v-model="sabhasadDetail.employee_data.businessEducationPost"
-                @change="clearEmployeeBusinessTeacher()"
-                id="businessEducationPost"
-                aria-label="Floating label select example"
-              >
-                <option value="">select</option>
-                <option value="Director">संस्थाचालक</option>
-                <option value="PrincipleOrHOD">
-                  मुख्याध्यापक/प्राचार्य/विभाग प्रमुख
-                </option>
-                <option value="teacher">प्राध्यापक/ शिक्षक</option>
-              </select>
-              <label for="businessEducationPost">पद?</label>
-            </div>
-          </div>
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.businessEducationPost == 'teacher'
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="
-                  sabhasadDetail.employee_data.businessEducationTeacherArea
-                "
-                class="form-control"
-                list="education"
-                id="businessEducationTeacherArea"
-                placeholder="reference"
-              />
-              <label for="businessEducationTeacherArea"
-                >आपण कोणत्या क्षेत्रात शिकवतात?</label
-              >
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.businessEducationPost == 'teacher'
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="
-                  sabhasadDetail.employee_data
-                    .businessEducationTeacherMainSubject
-                "
-                class="form-control"
-                id="businessEducationTeacherMainSubject"
-                placeholder="reference"
-              />
-              <label for="businessEducationTeacherMainSubject"
-                >आपल्या शिकवणीतील मुख्य विषय?</label
-              >
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="sabhasadDetail.employee_data.businessArea == 'इतर शॉप'"
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.employee_data.otherShopName"
-                class="form-control"
-                id="otherShopName"
-                placeholder="reference"
-              />
-              <label for="otherShopName">शॉपीचे नाव?</label>
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="sabhasadDetail.employee_data.businessArea == 'इतर शॉप'"
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.employee_data.otherShopType"
-                class="form-control"
-                id="otherShopType"
-                placeholder="reference"
-              />
-              <label for="otherShopType"
-                >कशाची शॉप आहे? (उदा, हार्डवेअर, कपडा दुकान इत्यादी)</label
-              >
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="sabhasadDetail.employee_data.businessArea == 'इतर व्यवसाय'"
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.employee_data.otherBusinessName"
-                class="form-control"
-                id="otherBusinessName"
-                placeholder="reference"
-              />
-              <label for="otherBusinessName">कोणता व्यवसाय आहे?</label>
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="sabhasadDetail.employee_data.businessArea == 'इतर सेवा'"
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.employee_data.otherServiceName"
-                class="form-control"
-                id="otherServiceName"
-                placeholder="reference"
-              />
-              <label for="otherServiceName">कोणता व्यवसाय आहे?</label>
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.employmentType.includes(
-                'Self Business'
-              )
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.employee_data.businessPlace"
-                class="form-control"
-                id="businessPlace"
-                placeholder="reference"
-              />
-              <label for="businessPlace">व्यवसायाचे ठिकाण?</label>
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.employmentType.includes('Employee')
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                list="employementList"
-                v-model="sabhasadDetail.employee_data.employementArea"
-                @change="clearEmployeeEmployeeArea()"
-                class="form-control"
-                id="employementArea"
-                placeholder="reference"
-              />
-              <label for="employementArea">नौकरीचे क्षेत्र?</label>
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="sabhasadDetail.employee_data.employementArea == 'वैद्यकीय'"
-          >
-            <div class="form-floating col">
-              <select
-                class="form-select"
-                v-model="sabhasadDetail.employee_data.employeeMedicalSubArea"
-                @change="clearEmployeeEmployeeDoctor()"
-                id="employeeMedicalSubArea"
-                aria-label="Floating label select example"
-              >
-                <option value="">select</option>
-                <option value="Hospital">दवाखाना</option>
-                <option value="Medical">मेडिकल</option>
-                <option value="Lab">लॅब</option>
-                <option value="Other">इतर</option>
-              </select>
-              <label for="employeeMedicalSubArea">उपक्षेत्र?</label>
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.employeeMedicalSubArea == 'Hospital'
-            "
-          >
-            <div class="form-floating col">
-              <select
-                class="form-select"
-                v-model="
-                  sabhasadDetail.employee_data.employeeMedicalHospitalPost
-                "
-                @change="
-                  sabhasadDetail.employee_data.employeeDoctorSpecilization =
-                    null
-                "
-                id="employeeMedicalHospitalPost"
-                aria-label="Floating label select example"
-              >
-                <option value="">select</option>
-                <option value="Doctor">डॉक्टर</option>
-                <option value="Warder">परिचारक/परीचारिका</option>
-                <option value="Other">इतर</option>
-              </select>
-              <label for="employeeMedicalHospitalPost">पद?</label>
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.employeeMedicalHospitalPost ==
-              'Doctor'
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="
-                  sabhasadDetail.employee_data.employeeDoctorSpecilization
-                "
-                class="form-control"
-                id="employeeDoctorSpecilization"
-                placeholder="reference"
-              />
-              <label for="employeeDoctorSpecilization"
-                >आपण कोणत्या क्षेत्रात तज्ञ आहात?(जसे बालरोग तज्ञ, ENT,
-                प्राणीरोग तज्ञ)</label
-              >
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.employementArea == 'अभियांत्रिकी'
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.employee_data.employeeEngineeringBranch"
-                class="form-control"
-                id="employeeEngineeringBranch"
-                placeholder="reference"
-              />
-              <label for="employeeEngineeringBranch"
-                >अभियांत्रिकी शाखा?(उदा. स्थापत्य, संगणक, विद्युत,
-                इत्यादी)</label
-              >
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.employementArea == 'शैक्षणिक क्षेत्र'
-            "
-          >
-            <div class="form-floating col">
-              <select
-                class="form-select"
-                v-model="sabhasadDetail.employee_data.employeeEducationPost"
-                id="employeeEducationPost"
-                aria-label="Floating label select example"
-              >
-                <option value="">select</option>
-                <option value="Director">व्यवस्थापक</option>
-                <option value="PrincipleOrHOD">
-                  मुख्याध्यापक/प्राचार्य/विभाग प्रमुख
-                </option>
-                <option value="teacher">प्राध्यापक/ शिक्षक</option>
-                <option value="nonTeachingStaff">शिक्षकेतर कर्मचारी</option>
-              </select>
-              <label for="employeeEducationPost">पद?</label>
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.employeeEducationPost == 'teacher'
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                list="education"
-                v-model="
-                  sabhasadDetail.employee_data.employeeEducationTeacherArea
-                "
-                class="form-control"
-                id="employeeEducationTeacherArea"
-                placeholder="reference"
-              />
-              <label for="employeeEducationTeacherArea"
-                >आपण कोणत्या क्षेत्रात शिकवतात?</label
-              >
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.employeeEducationPost == 'teacher'
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="
-                  sabhasadDetail.employee_data
-                    .employeeEducationTeacherMainSubject
-                "
-                class="form-control"
-                id="employeeEducationTeacherMainSubject"
-                placeholder="reference"
-              />
-              <label for="employeeEducationTeacherMainSubject"
-                >आपल्या शिकवणीतील मुख्य विषय?</label
-              >
-            </div>
-          </div>
-
-          <div v-if="sabhasadDetail.employee_data.employementArea">
             <div
               class="row g-1 mb-3"
               v-if="
-                [
-                  'कायदेविषयक',
-                  'प्रशासकीय अधिकारी',
-                  'लोकप्रतिनिधी',
-                  'पोलिस',
-                  'बँक',
-                  'चित्रपट',
-                  'संगणकीय सेवा',
-                  'ग्राफिक्स डिझाईन',
-                  'कृषी',
-                  'हॉटेल',
-                  'मांस',
-                ].includes(sabhasadDetail.employee_data.employementArea)
+                sabhasadDetail.employee_data.businessArea == 'शैक्षणिक क्षेत्र'
+              "
+            >
+              <div class="form-floating col">
+                <select
+                  required
+                  class="form-select"
+                  v-model="sabhasadDetail.employee_data.businessEducationPost"
+                  @change="
+                    clearEmployeeBusinessTeacher();
+                    checkValidataty($event.target);
+                  "
+                  id="businessEducationPost"
+                  aria-label="Floating label select example"
+                >
+                  <option value="">select</option>
+                  <option value="Director">संस्थाचालक</option>
+                  <option value="PrincipleOrHOD">
+                    मुख्याध्यापक/प्राचार्य/विभाग प्रमुख
+                  </option>
+                  <option value="teacher">प्राध्यापक/ शिक्षक</option>
+                </select>
+                <label for="businessEducationPost">पद?</label>
+              </div>
+            </div>
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.businessEducationPost == 'teacher'
               "
             >
               <div class="form-floating col">
                 <input
                   required
                   type="text"
-                  v-model="sabhasadDetail.employee_data.employeePost"
+                  @change="checkValidataty($event.target)"
+                  v-model="
+                    sabhasadDetail.employee_data.businessEducationTeacherArea
+                  "
                   class="form-control"
-                  id="employeePost"
+                  list="education"
+                  id="businessEducationTeacherArea"
                   placeholder="reference"
                 />
-                <label for="employeePost">पद आणि कार्यक्षेत्र?</label>
+                <label for="businessEducationTeacherArea"
+                  >आपण कोणत्या क्षेत्रात शिकवतात?</label
+                >
               </div>
             </div>
-          </div>
 
-          <div
-            class="row g-1 mb-3"
-            v-if="sabhasadDetail.employee_data.employementArea == 'इतर'"
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.employee_data.employeeOtherPost"
-                class="form-control"
-                id="employeeOtherPost"
-                placeholder="reference"
-              />
-              <label for="employeeOtherPost">इतर कोणती नौकरी??</label>
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.employmentType.includes('Trader')
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.employee_data.traderArea"
-                class="form-control"
-                id="traderArea"
-                placeholder="reference"
-              />
-              <label for="traderArea"
-                >व्यापार क्षेत्र?(उदा शेतीचा माल, औद्योगिक)</label
-              >
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3"
-            v-if="
-              sabhasadDetail.employee_data.employmentType.includes(
-                'Agriculture'
-              )
-            "
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.employee_data.agricultureMainCrops"
-                class="form-control"
-                id="agricultureMainCrops"
-                placeholder="reference"
-              />
-              <label for="agricultureMainCrops"
-                >आपण शेतात कोणती मुख्य पिके पिके घेतात?</label
-              >
-            </div>
-          </div>
-
-          <div
-            class="row g-1 mb-3 border-gray"
-            v-if="
-              sabhasadDetail.employee_data.employmentType.includes(
-                'Agriculture'
-              )
-            "
-          >
-            <div class="col-4">
-              <label>आपण शेती पुरक जोडव्यवसाय करत आहात का?</label>
-            </div>
-            <div class="col-8">
-              <div class="form-check form-check-inline">
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.businessEducationPost == 'teacher'
+              "
+            >
+              <div class="form-floating col">
                 <input
                   required
-                  class="form-check-input"
+                  type="text"
+                  @change="checkValidataty($event.target)"
                   v-model="
-                    sabhasadDetail.employee_data.isAgricultureCumBusiness
+                    sabhasadDetail.employee_data
+                      .businessEducationTeacherMainSubject
                   "
-                  type="radio"
-                  id="isAgricultureCumBusiness"
-                  v-bind:value="true"
+                  class="form-control"
+                  id="businessEducationTeacherMainSubject"
+                  placeholder="reference"
                 />
-                <label class="form-check-label" for="isAgricultureCumBusiness"
-                  >हो</label
+                <label for="businessEducationTeacherMainSubject"
+                  >आपल्या शिकवणीतील मुख्य विषय?</label
                 >
               </div>
-              <div class="form-check form-check-inline">
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.employee_data.businessArea == 'इतर शॉप'"
+            >
+              <div class="form-floating col">
                 <input
                   required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.married"
-                  type="radio"
-                  @change="
-                    sabhasadDetail.employee_data.agricultureCumBusinessName ==
-                      null
-                  "
-                  id="isAgricultureCumBusiness1"
-                  v-bind:value="false"
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.employee_data.otherShopName"
+                  class="form-control"
+                  id="otherShopName"
+                  placeholder="reference"
                 />
-                <label class="form-check-label" for="isAgricultureCumBusiness1"
-                  >नाही</label
+                <label for="otherShopName">शॉपीचे नाव?</label>
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.employee_data.businessArea == 'इतर शॉप'"
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.employee_data.otherShopType"
+                  class="form-control"
+                  id="otherShopType"
+                  placeholder="reference"
+                />
+                <label for="otherShopType"
+                  >कशाची शॉप आहे? (उदा, हार्डवेअर, कपडा दुकान इत्यादी)</label
                 >
               </div>
             </div>
-          </div>
 
-          <div
-            class="row g-1 mb-3"
-            v-if="sabhasadDetail.employee_data.isAgricultureCumBusiness"
-          >
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="
-                  sabhasadDetail.employee_data.agricultureCumBusinessName
-                "
-                class="form-control"
-                id="agricultureCumBusinessName"
-                placeholder="reference"
-              />
-              <label for="agricultureCumBusinessName"
-                >व्यापार क्षेत्र?(उदा शेतीचा माल, औद्योगिक)</label
-              >
+            <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.employee_data.businessArea == 'इतर व्यवसाय'"
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.employee_data.otherBusinessName"
+                  class="form-control"
+                  id="otherBusinessName"
+                  placeholder="reference"
+                />
+                <label for="otherBusinessName">कोणता व्यवसाय आहे?</label>
+              </div>
             </div>
-          </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.employee_data.businessArea == 'इतर सेवा'"
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.employee_data.otherServiceName"
+                  class="form-control"
+                  id="otherServiceName"
+                  placeholder="reference"
+                />
+                <label for="otherServiceName">कोणता व्यवसाय आहे?</label>
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.employmentType.includes(
+                  'Self Business'
+                )
+              "
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.employee_data.businessPlace"
+                  class="form-control"
+                  id="businessPlace"
+                  placeholder="reference"
+                />
+                <label for="businessPlace">व्यवसायाचे ठिकाण?</label>
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.employmentType.includes('Employee')
+              "
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  list="employementList"
+                  v-model="sabhasadDetail.employee_data.employementArea"
+                  @change="
+                    clearEmployeeEmployeeArea();
+                    checkValidataty($event.target);
+                  "
+                  class="form-control"
+                  id="employementArea"
+                  placeholder="reference"
+                />
+                <label for="employementArea">नौकरीचे क्षेत्र?</label>
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.employee_data.employementArea == 'वैद्यकीय'"
+            >
+              <div class="form-floating col">
+                <select
+                  required
+                  class="form-select"
+                  v-model="sabhasadDetail.employee_data.employeeMedicalSubArea"
+                  @change="
+                    clearEmployeeEmployeeDoctor();
+                    checkValidataty($event.target);
+                  "
+                  id="employeeMedicalSubArea"
+                  aria-label="Floating label select example"
+                >
+                  <option value="">select</option>
+                  <option value="Hospital">दवाखाना</option>
+                  <option value="Medical">मेडिकल</option>
+                  <option value="Lab">लॅब</option>
+                  <option value="Other">इतर</option>
+                </select>
+                <label for="employeeMedicalSubArea">उपक्षेत्र?</label>
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.employeeMedicalSubArea ==
+                'Hospital'
+              "
+            >
+              <div class="form-floating col">
+                <select
+                  required
+                  class="form-select"
+                  v-model="
+                    sabhasadDetail.employee_data.employeeMedicalHospitalPost
+                  "
+                  @change="
+                    sabhasadDetail.employee_data.employeeDoctorSpecilization =
+                      null;
+                    checkValidataty($event.target);
+                  "
+                  id="employeeMedicalHospitalPost"
+                  aria-label="Floating label select example"
+                >
+                  <option value="">select</option>
+                  <option value="Doctor">डॉक्टर</option>
+                  <option value="Warder">परिचारक/परीचारिका</option>
+                  <option value="Other">इतर</option>
+                </select>
+                <label for="employeeMedicalHospitalPost">पद?</label>
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.employeeMedicalHospitalPost ==
+                'Doctor'
+              "
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="
+                    sabhasadDetail.employee_data.employeeDoctorSpecilization
+                  "
+                  class="form-control"
+                  id="employeeDoctorSpecilization"
+                  placeholder="reference"
+                />
+                <label for="employeeDoctorSpecilization"
+                  >आपण कोणत्या क्षेत्रात तज्ञ आहात?(जसे बालरोग तज्ञ, ENT,
+                  प्राणीरोग तज्ञ)</label
+                >
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.employementArea == 'अभियांत्रिकी'
+              "
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="
+                    sabhasadDetail.employee_data.employeeEngineeringBranch
+                  "
+                  class="form-control"
+                  id="employeeEngineeringBranch"
+                  placeholder="reference"
+                />
+                <label for="employeeEngineeringBranch"
+                  >अभियांत्रिकी शाखा?(उदा. स्थापत्य, संगणक, विद्युत,
+                  इत्यादी)</label
+                >
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.employementArea ==
+                'शैक्षणिक क्षेत्र'
+              "
+            >
+              <div class="form-floating col">
+                <select
+                  required
+                  @change="checkValidataty($event.target)"
+                  class="form-select"
+                  v-model="sabhasadDetail.employee_data.employeeEducationPost"
+                  id="employeeEducationPost"
+                  aria-label="Floating label select example"
+                >
+                  <option value="">select</option>
+                  <option value="Director">व्यवस्थापक</option>
+                  <option value="PrincipleOrHOD">
+                    मुख्याध्यापक/प्राचार्य/विभाग प्रमुख
+                  </option>
+                  <option value="teacher">प्राध्यापक/ शिक्षक</option>
+                  <option value="nonTeachingStaff">शिक्षकेतर कर्मचारी</option>
+                </select>
+                <label for="employeeEducationPost">पद?</label>
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.employeeEducationPost == 'teacher'
+              "
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  list="education"
+                  v-model="
+                    sabhasadDetail.employee_data.employeeEducationTeacherArea
+                  "
+                  class="form-control"
+                  id="employeeEducationTeacherArea"
+                  placeholder="reference"
+                />
+                <label for="employeeEducationTeacherArea"
+                  >आपण कोणत्या क्षेत्रात शिकवतात?</label
+                >
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.employeeEducationPost == 'teacher'
+              "
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="
+                    sabhasadDetail.employee_data
+                      .employeeEducationTeacherMainSubject
+                  "
+                  class="form-control"
+                  id="employeeEducationTeacherMainSubject"
+                  placeholder="reference"
+                />
+                <label for="employeeEducationTeacherMainSubject"
+                  >आपल्या शिकवणीतील मुख्य विषय?</label
+                >
+              </div>
+            </div>
+
+            <div v-if="sabhasadDetail.employee_data.employementArea">
+              <div
+                class="row g-1 mb-3"
+                v-if="
+                  [
+                    'कायदेविषयक',
+                    'प्रशासकीय अधिकारी',
+                    'लोकप्रतिनिधी',
+                    'पोलिस',
+                    'बँक',
+                    'चित्रपट',
+                    'संगणकीय सेवा',
+                    'ग्राफिक्स डिझाईन',
+                    'कृषी',
+                    'हॉटेल',
+                    'मांस',
+                  ].includes(sabhasadDetail.employee_data.employementArea)
+                "
+              >
+                <div class="form-floating col">
+                  <input
+                    required
+                    type="text"
+                    @change="checkValidataty($event.target)"
+                    v-model="sabhasadDetail.employee_data.employeePost"
+                    class="form-control"
+                    id="employeePost"
+                    placeholder="reference"
+                  />
+                  <label for="employeePost">पद आणि कार्यक्षेत्र?</label>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.employee_data.employementArea == 'इतर'"
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.employee_data.employeeOtherPost"
+                  class="form-control"
+                  id="employeeOtherPost"
+                  placeholder="reference"
+                />
+                <label for="employeeOtherPost">इतर कोणती नौकरी??</label>
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.employmentType.includes('Trader')
+              "
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.employee_data.traderArea"
+                  class="form-control"
+                  id="traderArea"
+                  placeholder="reference"
+                />
+                <label for="traderArea"
+                  >व्यापार क्षेत्र?(उदा शेतीचा माल, औद्योगिक)</label
+                >
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="
+                sabhasadDetail.employee_data.employmentType.includes(
+                  'Agriculture'
+                )
+              "
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.employee_data.agricultureMainCrops"
+                  class="form-control"
+                  id="agricultureMainCrops"
+                  placeholder="reference"
+                />
+                <label for="agricultureMainCrops"
+                  >आपण शेतात कोणती मुख्य पिके पिके घेतात?</label
+                >
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3 border-gray"
+              v-if="
+                sabhasadDetail.employee_data.employmentType.includes(
+                  'Agriculture'
+                )
+              "
+            >
+              <div class="col-4">
+                <label>आपण शेती पुरक जोडव्यवसाय करत आहात का?</label>
+              </div>
+              <div class="col-8">
+                <div class="form-check form-check-inline">
+                  <input
+                    required
+                    class="form-check-input"
+                    v-model="
+                      sabhasadDetail.employee_data.isAgricultureCumBusiness
+                    "
+                    type="radio"
+                    @change="checkValidataty($event.target)"
+                    id="isAgricultureCumBusiness"
+                    name="isAgricultureCumBusiness"
+                    v-bind:value="true"
+                  />
+                  <label class="form-check-label" for="isAgricultureCumBusiness"
+                    >हो</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    required
+                    class="form-check-input"
+                    v-model="
+                      sabhasadDetail.employee_data.isAgricultureCumBusiness
+                    "
+                    type="radio"
+                    @change="
+                      sabhasadDetail.employee_data.agricultureCumBusinessName ==
+                        null;
+                      checkValidataty($event.target);
+                    "
+                    name="isAgricultureCumBusiness"
+                    id="isAgricultureCumBusiness1"
+                    v-bind:value="false"
+                  />
+                  <label
+                    class="form-check-label"
+                    for="isAgricultureCumBusiness1"
+                    >नाही</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.employee_data.isAgricultureCumBusiness"
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="
+                    sabhasadDetail.employee_data.agricultureCumBusinessName
+                  "
+                  class="form-control"
+                  id="agricultureCumBusinessName"
+                  placeholder="reference"
+                />
+                <label for="agricultureCumBusinessName"
+                  >व्यापार क्षेत्र?(उदा शेतीचा माल, औद्योगिक)</label
+                >
+              </div>
+            </div>
+          </form>
         </div>
 
         <div class="tab">
-          <div class="row g-1 mb-3 border-gray">
-            <div class="col-xs-12 col-md-6">
-              <label>आपण कोणत्या राजकीय पक्षात काम करता का?</label>
-            </div>
-            <div class="col-xs-12 col-md-6">
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.isPoliticalBackground"
-                  type="radio"
-                  id="isPoliticalBackground"
-                  v-bind:value="true"
-                />
-                <label class="form-check-label" for="isPoliticalBackground"
-                  >हो</label
-                >
+          <form ref="basicForm5">
+            <div class="row g-1 mb-3 border-gray">
+              <div class="col-xs-12 col-md-6">
+                <label>आपण कोणत्या राजकीय पक्षात काम करता का?</label>
               </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.isPoliticalBackground"
-                  type="radio"
-                  @change="clearPolyticalPartyDetail()"
-                  id="isPoliticalBackground1"
-                  v-bind:value="false"
-                />
-                <label class="form-check-label" for="isPoliticalBackground1"
-                  >नाही</label
-                >
+              <div class="col-xs-12 col-md-6">
+                <div class="form-check form-check-inline">
+                  <input
+                    required
+                    class="form-check-input"
+                    v-model="sabhasadDetail.isPoliticalBackground"
+                    type="radio"
+                    @change="checkValidataty($event.target)"
+                    name="isPoliticalBackground"
+                    id="isPoliticalBackground"
+                    v-bind:value="true"
+                  />
+                  <label class="form-check-label" for="isPoliticalBackground"
+                    >हो</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    required
+                    class="form-check-input"
+                    v-model="sabhasadDetail.isPoliticalBackground"
+                    type="radio"
+                    @change="
+                      clearPolyticalPartyDetail();
+                      checkValidataty($event.target);
+                    "
+                    name="isPoliticalBackground"
+                    id="isPoliticalBackground1"
+                    v-bind:value="false"
+                  />
+                  <label class="form-check-label" for="isPoliticalBackground1"
+                    >नाही</label
+                  >
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="row g-1 mb-3" v-if="sabhasadDetail.isPoliticalBackground">
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.politcalPartyName"
-                class="form-control"
-                id="politcalPartyName"
-                placeholder="reference"
-              />
-              <label for="politcalPartyName">कोणत्या पक्षात कार्य करता?</label>
+            <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.isPoliticalBackground"
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.politcalPartyName"
+                  class="form-control"
+                  id="politcalPartyName"
+                  placeholder="reference"
+                />
+                <label for="politcalPartyName"
+                  >कोणत्या पक्षात कार्य करता?</label
+                >
+              </div>
             </div>
-          </div>
 
-          <div class="row g-1 mb-3" v-if="sabhasadDetail.isPoliticalBackground">
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.politcalPartyPost"
-                class="form-control"
-                id="politcalPartyPost"
-                placeholder="reference"
-              />
-              <label for="politcalPartyPost">पद आणि कार्यक्षेत्र?</label>
+            <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.isPoliticalBackground"
+            >
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.politcalPartyPost"
+                  class="form-control"
+                  id="politcalPartyPost"
+                  placeholder="reference"
+                />
+                <label for="politcalPartyPost">पद आणि कार्यक्षेत्र?</label>
+              </div>
             </div>
-          </div>
 
-          <div class="row g-1 mb-3 border-gray">
-            <div class="col-xs-12 col-md-6">
-              <label>शिवमुद्रा सोडुन इतर कोणत्या संघटनेत कार्य करता का?</label>
-            </div>
-            <div class="col-xs-12 col-md-6">
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.isSocialBackground"
-                  type="radio"
-                  id="isSocialBackground"
-                  v-bind:value="true"
-                />
-                <label class="form-check-label" for="isSocialBackground"
-                  >हो</label
+            <div class="row g-1 mb-3 border-gray">
+              <div class="col-xs-12 col-md-6">
+                <label
+                  >शिवमुद्रा सोडुन इतर कोणत्या संघटनेत कार्य करता का?</label
                 >
               </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.isSocialBackground"
-                  type="radio"
-                  @change="clearSocialFoundationDetail()"
-                  id="isSocialBackground1"
-                  v-bind:value="false"
-                />
-                <label class="form-check-label" for="isSocialBackground1"
-                  >नाही</label
-                >
+              <div class="col-xs-12 col-md-6">
+                <div class="form-check form-check-inline">
+                  <input
+                    required
+                    class="form-check-input"
+                    v-model="sabhasadDetail.isSocialBackground"
+                    type="radio"
+                    @change="checkValidataty($event.target)"
+                    name="isSocialBackground"
+                    id="isSocialBackground"
+                    v-bind:value="true"
+                  />
+                  <label class="form-check-label" for="isSocialBackground"
+                    >हो</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    required
+                    class="form-check-input"
+                    v-model="sabhasadDetail.isSocialBackground"
+                    type="radio"
+                    name="isSocialBackground"
+                    @change="
+                      clearSocialFoundationDetail();
+                      checkValidataty($event.target);
+                    "
+                    id="isSocialBackground1"
+                    v-bind:value="false"
+                  />
+                  <label class="form-check-label" for="isSocialBackground1"
+                    >नाही</label
+                  >
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="row g-1 mb-3" v-if="sabhasadDetail.isSocialBackground">
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.socialFoundationName"
-                class="form-control"
-                id="socialFoundationName"
-                placeholder="reference"
-              />
-              <label for="socialFoundationName"
-                >कोणत्या संघटनेत कार्य करता?</label
-              >
+            <div class="row g-1 mb-3" v-if="sabhasadDetail.isSocialBackground">
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.socialFoundationName"
+                  class="form-control"
+                  id="socialFoundationName"
+                  placeholder="reference"
+                />
+                <label for="socialFoundationName"
+                  >कोणत्या संघटनेत कार्य करता?</label
+                >
+              </div>
             </div>
-          </div>
 
-          <div class="row g-1 mb-3" v-if="sabhasadDetail.isSocialBackground">
-            <div class="form-floating col">
-              <input
-                required
-                type="text"
-                v-model="sabhasadDetail.socialFoundationPost"
-                class="form-control"
-                id="socialFoundationPost"
-                placeholder="reference"
-              />
-              <label for="socialFoundationPost">पद आणि कार्यक्षेत्र?</label>
+            <div class="row g-1 mb-3" v-if="sabhasadDetail.isSocialBackground">
+              <div class="form-floating col">
+                <input
+                  required
+                  type="text"
+                  @change="checkValidataty($event.target)"
+                  v-model="sabhasadDetail.socialFoundationPost"
+                  class="form-control"
+                  id="socialFoundationPost"
+                  placeholder="reference"
+                />
+                <label for="socialFoundationPost">पद आणि कार्यक्षेत्र?</label>
+              </div>
             </div>
-          </div>
 
-          <div class="row g-1 mb-3 border-gray">
-            <div class="col-12">
-              <label
-                >तुम्ही खालीलपैकी कोणत्या क्षेत्रात मराठा शिवमुद्रा प्रतिष्ठानला
-                मदत करू शकता?</label
-              >
+            <div class="row g-1 mb-3 border-gray">
+              <div class="col-12">
+                <label
+                  >तुम्ही खालीलपैकी कोणत्या क्षेत्रात मराठा शिवमुद्रा
+                  प्रतिष्ठानला मदत करू शकता?</label
+                >
+              </div>
+              <div class="col-12" style="text-align: left">
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.helpForOrg"
+                    type="checkbox"
+                    @change="checkValidataty($event.target)"
+                    id="helpForOrg"
+                    value="Editor"
+                  />
+                  <label class="form-check-label" for="helpForOrg"
+                    >मि एडिटींग करू {{ maleFemaleLabel }}.</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.helpForOrg"
+                    type="checkbox"
+                    @change="checkValidataty($event.target)"
+                    id="helpForOrg1"
+                    value="Speaker"
+                  />
+                  <label class="form-check-label" for="helpForOrg1"
+                    >मि वक्ता/किर्तनकार आहे. मि शिवमुद्रामार्फत भाषण/किर्तन करू
+                    {{ maleFemaleLabel }}.</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.helpForOrg"
+                    type="checkbox"
+                    @change="checkValidataty($event.target)"
+                    id="helpForOrg2"
+                    value="Writer"
+                  />
+                  <label class="form-check-label" for="helpForOrg2"
+                    >मला छान लेख लिहिता येतात. ते मि शिवमुद्रासाठी लिहू
+                    {{ maleFemaleLabel }}.</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.helpForOrg"
+                    type="checkbox"
+                    @change="checkValidataty($event.target)"
+                    id="helpForOrg3"
+                    value="Campaigner"
+                  />
+                  <label class="form-check-label" for="helpForOrg3"
+                    >मी मोहिमेला तसेच कार्यक्रमाला येऊ
+                    {{ maleFemaleLabel }}.</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.helpForOrg"
+                    type="checkbox"
+                    @change="checkValidataty($event.target)"
+                    id="helpForOrg4"
+                    value="Movementer"
+                  />
+                  <label class="form-check-label" for="helpForOrg4"
+                    >मि शिवमुद्रामार्फत माझ्या क्षेत्रात आंदोलनात सहभागी होऊ
+                    {{ maleFemaleLabel }}.</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.helpForOrg"
+                    type="checkbox"
+                    @change="checkValidataty($event.target)"
+                    id="helpForOrg5"
+                    value="VoiceMagician"
+                  />
+                  <label class="form-check-label" for="helpForOrg5"
+                    >माझा आवाज चांगला आहे. मि दिनविशेष किंवा इतर व्हिडीओला आवाज
+                    देऊ {{ maleFemaleLabel }}.</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    v-model="sabhasadDetail.helpForOrg"
+                    type="checkbox"
+                    @change="checkValidataty($event.target)"
+                    id="helpForOrg6"
+                    value="FinancialSupporter"
+                  />
+                  <label class="form-check-label" for="helpForOrg6"
+                    >मि शिवमुद्राला आर्थिक मदत करू {{ maleFemaleLabel }}.</label
+                  >
+                </div>
+              </div>
             </div>
-            <div class="col-12" style="text-align: left">
-              <div class="form-check form-check-inline">
+          </form>
+        </div>
+
+        <div class="tab">
+          <form ref="basicForm6">
+            <div
+              class="row g-1 mb-3"
+              v-if="sabhasadDetail.isPoliticalBackground"
+            >
+              <div class="form-floating col">
                 <input
                   required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.helpForOrg"
-                  type="checkbox"
-                  id="helpForOrg"
-                  value="Editor"
+                  type="file"
+                 
+                  class="form-control"
+                  id="aadharImage"
+                  placeholder="reference"
+                  ref="fileInput"
+                  @change="onFileSelected"
+                  accept="image/*, application/pdf"
                 />
-                <label class="form-check-label" for="helpForOrg"
-                  >मि एडिटींग करू {{ maleFemaleLabel }}.</label
+                <label for="politcalPartyName"
+                  >कृपया आपले आधार कार्ड अपलोड करा.</label
                 >
               </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.helpForOrg"
-                  type="checkbox"
-                  id="helpForOrg1"
-                  value="Speaker"
-                />
-                <label class="form-check-label" for="helpForOrg1"
-                  >मि वक्ता/किर्तनकार आहे. मि शिवमुद्रामार्फत भाषण/किर्तन करू
-                  {{ maleFemaleLabel }}.</label
-                >
+              
+            </div>
+            <!-- <div v-if="selectedFile && selectedFileUrl">
+              <div v-if="isImage(selectedFile)">
+                <img style="max-width: 300px; max-height: 300px;" :src="selectedFileUrl" />
               </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.helpForOrg"
-                  type="checkbox"
-                  id="helpForOrg2"
-                  value="Writer"
-                />
-                <label class="form-check-label" for="helpForOrg2"
-                  >मला छान लेख लिहिता येतात. ते मि शिवमुद्रासाठी लिहू
-                  {{ maleFemaleLabel }}.</label
+              <div v-else-if="isPdf(selectedFile)">
+                <iframe
+                  :src="selectedFileUrl"
+                  type="application/pdf"
+                  width="100%"
+                  height="500px"
                 >
+                  <p>Could not display PDF</p>
+                </iframe>
               </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.helpForOrg"
-                  type="checkbox"
-                  id="helpForOrg3"
-                  value="Campaigner"
-                />
-                <label class="form-check-label" for="helpForOrg3"
-                  >मी मोहिमेला तसेच कार्यक्रमाला येऊ
-                  {{ maleFemaleLabel }}.</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.helpForOrg"
-                  type="checkbox"
-                  id="helpForOrg4"
-                  value="Movementer"
-                />
-                <label class="form-check-label" for="helpForOrg4"
-                  >मि शिवमुद्रामार्फत माझ्या क्षेत्रात आंदोलनात सहभागी होऊ
-                  {{ maleFemaleLabel }}.</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.helpForOrg"
-                  type="checkbox"
-                  id="helpForOrg5"
-                  value="VoiceMagician"
-                />
-                <label class="form-check-label" for="helpForOrg5"
-                  >माझा आवाज चांगला आहे. मि दिनविशेष किंवा इतर व्हिडीओला आवाज
-                  देऊ {{ maleFemaleLabel }}.</label
-                >
-              </div>
-              <div class="form-check form-check-inline">
-                <input
-                  required
-                  class="form-check-input"
-                  v-model="sabhasadDetail.helpForOrg"
-                  type="checkbox"
-                  id="helpForOrg6"
-                  value="FinancialSupporter"
-                />
-                <label class="form-check-label" for="helpForOrg6"
-                  >मि शिवमुद्राला आर्थिक मदत करू {{ maleFemaleLabel }}.</label
-                >
+            </div> -->
+            <div>
+              <div v-if="selectedFileUrl">
+                <img style="max-width: 300px; max-height: 300px;" :src="selectedFileUrl" />
               </div>
             </div>
-          </div>
+          </form>
         </div>
 
         <div class="thanks-message text-center" id="text-message">
@@ -1981,7 +2267,7 @@
             </button>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   </section>
 </template>
@@ -1995,10 +2281,12 @@ import { AddressService } from "@/services/AddressSerivice";
 import { Districts } from "@/interfaces/Districts";
 import { SubDistrict } from "@/interfaces/SubDistrict";
 import { Village } from "@/interfaces/Village";
+import { reactive } from "vue";
 
 export default class RegisterSabhasad extends Vue {
   @Ref("allSteps") readonly myTitle!: HTMLElement | null;
   @Ref("tabParent") readonly tabParent!: HTMLElement | null;
+
   hidePreviousButton = false;
   hideNextButton = false;
   hidePreNextDiv = false;
@@ -2012,7 +2300,6 @@ export default class RegisterSabhasad extends Vue {
   currentVillageList: Village[] = [];
   maleFemaleLabel = "शकतो";
   sabhasadDetail: SabhasadDetails = {
-    current_address: {},
     document_data: {},
     education_data: {},
     employee_data: {
@@ -2022,14 +2309,27 @@ export default class RegisterSabhasad extends Vue {
   };
 
   async mounted(): Promise<void> {
+    //npm installthis.$tore.dispatch('getUser');
     this.loadDistricts();
     this.showTab(this.currentTab);
   }
 
+  created() {
+    this.$watch(
+      () => this.sabhasadDetail,
+      () => {
+        localStorage.setItem(
+          "sabhasadDetails",
+          JSON.stringify(this.sabhasadDetail)
+        );
+      },
+      { deep: true }
+    );
+  }
+
   async loadSabhasadDetails() {
-    //this.$refs
     const service = new SabhasadService();
-    this.sabhasadDetail = await service.getUsers();
+    this.sabhasadDetail = reactive<SabhasadDetails>(await service.getUsers());
     let permanentDistrict = this.sabhasadDetail.permanent_address.District;
     let currentDistrict = this.sabhasadDetail.current_address?.District;
     if (permanentDistrict) this.loadTalukas(true, permanentDistrict);
@@ -2038,7 +2338,30 @@ export default class RegisterSabhasad extends Vue {
     let currentTaluka = this.sabhasadDetail.current_address?.SubDistrict;
     if (permanentTaluka) this.loadVillages(true, permanentTaluka);
     if (currentTaluka) this.loadVillages(false, currentTaluka);
+    if(this.sabhasadDetail.document_data?.aadharImage)
+    this.selectedFileUrl = this.sabhasadDetail.document_data?.aadharImage;
+
   }
+
+  selectedFile: File | null = null;
+  selectedFileUrl: string | null = null;
+
+  onFileSelected(): void {
+    const fileInput = this.$refs.fileInput as HTMLInputElement;
+    if (fileInput.files && fileInput.files[0]) {
+      this.selectedFile = fileInput.files[0];
+      this.selectedFileUrl = URL.createObjectURL(this.selectedFile);
+    }
+  }
+
+  isImage(file: File): boolean {
+    return true || file.type.startsWith('image/');
+  }
+
+  isPdf(file: File): boolean {
+    return file.type === 'application/pdf';
+  }
+
 
   alertMessage(msg: string) {
     alert(msg);
@@ -2244,6 +2567,16 @@ export default class RegisterSabhasad extends Vue {
         // eslint-disable-next-line no-undef
       ) as HTMLCollectionOf<HTMLElement>;
       /* if (n == 1 && !validateForm()) return false; */
+      if (this.currentTab > 0) {
+        let form = this.$refs["basicForm" + this.currentTab] as HTMLFormElement;
+        const invalidControls = Array.from(form.elements).filter((control) => {
+          let newControl: HTMLFormElement = control as HTMLFormElement;
+          !newControl.checkValidity();
+        });
+        invalidControls.forEach((element) => this.checkValidataty(element));
+        if (!form.reportValidity()) return;
+      }
+
       x[this.currentTab].style.display = "none";
       this.currentTab = this.currentTab + n;
       if (this.currentTab == x.length) {
@@ -2254,6 +2587,14 @@ export default class RegisterSabhasad extends Vue {
         //this.myTitle?.classList.add('d-none');
       }
       this.showTab(this.currentTab);
+    }
+  }
+
+  checkValidataty(targetTemp: HTMLInputElement | null | EventTarget) {
+    if (targetTemp) {
+      let target = targetTemp as HTMLInputElement;
+      if (target.reportValidity()) target.classList.remove("invalid");
+      else target.classList.add("invalid");
     }
   }
 
@@ -2290,5 +2631,8 @@ export default class RegisterSabhasad extends Vue {
   border: 1px solid #ced4da;
   border-radius: 0.375rem;
   padding: 10px;
+}
+.invalid {
+  border: 1px solid red;
 }
 </style>

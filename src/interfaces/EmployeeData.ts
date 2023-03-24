@@ -28,5 +28,6 @@ export interface EmployeeData {
     isAgricultureCumBusiness?: boolean | null,
     agricultureCumBusinessName?: string | null,
     created_at?: Date | null,
-    updated_at?: Date | null
+    updated_at?: Date | null;
+    [key: string]: unknown;
 }

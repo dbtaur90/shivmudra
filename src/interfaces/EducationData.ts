@@ -14,5 +14,6 @@ export interface EducationData {
     isEducationCompleted?: boolean | null,
     educationBranchEngineering?: string | null,
     created_at?: Date | null,
-    updated_at?: Date | null
+    updated_at?: Date | null;
+    [key: string]: unknown;
 }

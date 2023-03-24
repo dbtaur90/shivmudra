@@ -34,9 +34,10 @@ export interface SabhasadDetails {
     education_data: EducationData,
     employee_data: EmployeeData,
     document_data: DocumentData | null,
-    current_address: Address | null,
+    current_address?: Address | null,
     permanent_address: Address,
     created_at?: Date | null,
-    updated_at?: Date | null,
-    deleted_at?: Date | null
+    updated_at?: Date | null
+    deleted_at?: Date | null;
+    [key: string]: unknown;
 }

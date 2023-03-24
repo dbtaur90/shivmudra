@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 import { SabhasadDetails } from '../interfaces/SabhasadDetails';
 
 export class SabhasadService {
@@ -7,5 +7,7 @@ export class SabhasadService {
   public async getUsers(): Promise<SabhasadDetails> {
     const response = await axios.get<SabhasadDetails>(this.apiUrl);
     return response.data;
+    // const response:SabhasadDetails = await JSON.parse(localStorage.getItem('sabhasadDetails') || '{}');
+    // return response
   }
 }
