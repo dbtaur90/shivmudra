@@ -18,7 +18,34 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/registration',
     name: 'registration',
+    meta: {
+      title: 'सभासद नोंदणी| मराठा शिवमुद्रा प्रतिष्ठान' // Set the page title here
+    },
     component: () => import('../views/RegisterSabhasad.vue')
+  },
+  {
+    path: '/sabhasad-list',
+    name: 'SabhasadList',
+    meta: {
+      title: 'सभासद यादी| मराठा शिवमुद्रा प्रतिष्ठान' // Set the page title here
+    },
+    component: () => import('../views/SabhasadList.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    meta: {
+      title: 'Login| मराठा शिवमुद्रा प्रतिष्ठान' // Set the page title here
+    },
+    component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/posting-request',
+    name: 'postRequest',
+    meta: {
+      title: 'नियुक्ती विनंती| मराठा शिवमुद्रा प्रतिष्ठान' // Set the page title here
+    },
+    component: () => import('../views/PostingRequest.vue')
   }
 ]
 

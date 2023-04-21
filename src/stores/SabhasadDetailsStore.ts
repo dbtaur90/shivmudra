@@ -9,7 +9,8 @@ export const useSabhasadStore = defineStore('sabhasadStore',{
             employee_data: {
                 employmentType: []
             },
-            permanent_address: {}
+            permanent_address: {},
+            helpForOrg: []
         } as SabhasadDetails,
         isConnected: false
     })

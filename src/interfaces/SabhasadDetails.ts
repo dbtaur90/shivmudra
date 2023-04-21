@@ -30,7 +30,7 @@ export interface SabhasadDetails {
     isSocialBackground?: boolean | null,
     socialFoundationName?: string | null,
     socialFoundationPost?: string | null,
-    helpForOrg?: string | null,
+    helpForOrg: [],
     education_data: EducationData,
     employee_data: EmployeeData,
     document_data: DocumentData | null,
