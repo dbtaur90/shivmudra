@@ -4,7 +4,9 @@ import { ISabhasadList } from '@/interfaces/ISabhasadList';
 
 export class SabhasadService {
   private apiUrl = 'https://marathashivmudra.co.in/api/sabhasad/';
-
+  constructor() {
+    axios.defaults.headers.common['token'] = '2e912f0031fa463c90426b49164e4291';
+  }
 
   public async getUsers(sabhadadID: number): Promise<SabhasadDetails> {
     const response = await axios.get<SabhasadDetails>(`${this.apiUrl}sabhasadDetails/${sabhadadID}`);
@@ -14,6 +16,11 @@ export class SabhasadService {
 
   public async getSabhasadList(): Promise<ISabhasadList[]> {
     const response = await axios.get<ISabhasadList[]>(`${this.apiUrl}sabhasad-list`);
+    return response.data;
+  }
+
+  public async generateSabhasadNumber(vid: number): Promise<any> {
+    const response = await axios.post<any>(`${this.apiUrl}generate-sabhasad-number`, { verificationID: vid });
     return response.data;
   }
 

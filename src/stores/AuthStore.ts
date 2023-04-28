@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const useVerifyDocumentStore = defineStore('verifyDocumentStore', {
+export const useAuthStore = defineStore('authStore', {
     state: () => ({
         sabhasadID: -1,
         verificationID: -1,
@@ -8,7 +8,6 @@ export const useVerifyDocumentStore = defineStore('verifyDocumentStore', {
         isSet: false,
         isDocumentsUploaded: false
     }),
-    persist: true,
     actions: {
         setValues(sabhasadID: number, verificationID = -1, isVerification = false, isDocumentsUploaded = false) {
             // Perform authentication logic and update state accordingly

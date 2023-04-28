@@ -5,7 +5,7 @@
     <router-link to="/about">About</router-link>
   </nav> -->
   <router-view/>
-  <div> Version: 1.04</div>
+  <div> Version: 1.03</div>
 </template>
 
 <style>
@@ -44,5 +44,11 @@ import HeaderView from './views/HeaderView.vue';
     HeaderView,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  created() {
+    if (window.location.hash) {
+      window.location.href = window.location.href.replace('/#', '');
+    }
+  }
+}
 </script>

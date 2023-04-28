@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="isDocs && !isLoaded"  class="loading">
+        <div v-if="isDocs && !isLoaded" class="loading">
             कागदपत्रे लोड होत आहेत. कृपया प्रतीक्षा करा.
             <div class="d-flex justify-content-center mt-5">
                 <div class="spinner-border" role="status">
@@ -8,7 +8,8 @@
                 </div>
             </div>
         </div>
-        <form id="formWrapper" class="form-wrapper" :class="{'d-none':isDocs && !isLoaded}" ref="basicForm6">
+        <form id="formWrapper" class="form-wrapper" :class="{ 'd-none': isDocs && !isLoaded }" ref="basicForm6">
+            <div class="alert">{{ basicData.firstName }} {{ basicData.middleName }} {{ basicData.lastName }} </div>
             <div class="form-group text-start focused">
                 <div v-if="documentFiles.aadharImage && documentFiles.aadharImageUrl">
                     <div v-if="isImage(documentFiles.aadharImage)">
@@ -149,7 +150,7 @@ import PDFViewer from 'pdf-viewer-vue'
 import { SabhasadService } from "@/services/SabhasadService";
 import { Verification } from "@/interfaces/Verification";
 import router from "@/router";
-import { RouteLocationNormalized, RouteParams } from "vue-router";
+import { useRoute } from "vue-router";
 import { useVerifyDocumentStore } from "@/stores/VerifyDocumentStore";
 
 interface BasicData {
@@ -169,7 +170,7 @@ interface BasicData {
 })
 export default class VerifyDocuments extends Vue {
     @Ref("formWrapper") readonly formWrapper!: HTMLElement | null;
-    private authStore = useVerifyDocumentStore()
+    private verifyStore = useVerifyDocumentStore()
     sabhasadID = -1;
     verificationId = 0;
     isVerification = false;
@@ -192,12 +193,17 @@ export default class VerifyDocuments extends Vue {
         uploadProgress: 0
     };
     mounted(): void {
-        if (this.authStore.isSet) {
-            this.sabhasadID = this.authStore.sabhasadID
-            this.verificationId = this.authStore.verificationID
-            this.isDocs = this.authStore.isDocumentsUploaded
-            this.isVerification = this.authStore.isVerification
-            this.authStore.clearValues();
+        const route = useRoute()
+        console.log(route.query)
+        if (route.query && route.query.sid) {
+            this.sabhasadID = Number(this.urlSafeBase64Decode(route.query.sid.toString()));
+        }
+        if (this.verifyStore.isSet) {
+            this.sabhasadID = this.verifyStore.sabhasadID
+            this.verificationId = this.verifyStore.verificationID
+            this.isDocs = this.verifyStore.isDocumentsUploaded
+            this.isVerification = this.verifyStore.isVerification
+            this.verifyStore.clearValues();
         }
         if (!this.sabhasadID || this.sabhasadID <= 0)
             router.replace({ path: '/sabhasad-list' })
@@ -219,6 +225,7 @@ export default class VerifyDocuments extends Vue {
             middleName: data.middleName,
         }
         this.documentData = data.document_data;
+        this.isDocs = !!this.documentData;
         if (this.documentData) {
             if (this.documentData.aadharImage) {
                 this.documentFiles.aadharImageUrl = this.documentData.aadharImage;
@@ -312,18 +319,22 @@ export default class VerifyDocuments extends Vue {
             if (this.documentFiles.tcImage)
                 this.formDataObject.formdata.append("tcImage", this.documentFiles.tcImage);
             await this.service.uploadDocuments(this.formDataObject);
+            localStorage.removeItem("sabhasadDetails");
+            localStorage.removeItem("currentTab");
             if (this.isVerification) {
                 const payload: Verification = {
                     id: this.verificationId,
                     sabhasadID: this.sabhasadID,
-                    documentVerification: verified == 1
+                    documentVerification: verified == 1,
+                    documentVerificationRemark: this.verificationRemark
                 }
+
                 await this.sabhasadSerive.updateSabhasadVerificationStatus(payload);
                 router.replace({ path: '/sabhasad-list' })
 
             }
-            localStorage.removeItem("sabhasadDetails");
-            localStorage.removeItem("currentTab");
+            else
+                router.replace({ path: '/thanks' });
         }
         else {
             alert('कृपया सर्व कागदपत्रे अपलोड करा.')
@@ -351,6 +362,18 @@ export default class VerifyDocuments extends Vue {
         let day = date.getDate();
         let month = date.getMonth() + 1;
         return `${year}-${month < 10 ? '0' : ''}${month}-${day}`;
+    }
+
+    urlSafeBase64Encode(str: string) {
+        const encodedString = btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+        return encodedString;
+    }
+
+    urlSafeBase64Decode(str: string) {
+        const padding = '='.repeat((4 - str.length % 4) % 4);
+        const encodedString = str.replace(/-/g, '+').replace(/_/g, '/') + padding;
+        const decodedString = atob(encodedString);
+        return decodedString;
     }
 }
 

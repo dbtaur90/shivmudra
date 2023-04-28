@@ -3,6 +3,9 @@ import { SabhasadDetails } from "@/interfaces/SabhasadDetails";
 import axios from "axios";
 
 export class FileService {
+    constructor(){
+        axios.defaults.headers.common['token'] = '2e912f0031fa463c90426b49164e4291';
+    }
     private apiUrl = 'https://marathashivmudra.co.in/api/sabhasad/';
     public async getFile(apiUrl: string): Promise<File> {
         apiUrl += `?v=${new Date().getTime()}`;

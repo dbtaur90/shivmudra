@@ -20,6 +20,7 @@ export interface SabhasadDetails {
     permanentSubAddress?: string | null,
     permanentVillage?: number | null,
     isSameAddress?: boolean | null,
+    workingArea?: boolean,
     currentSubAddress?: string | null,
     currentVillage?: number | null,
     competitiveCandidate?: boolean | null,
