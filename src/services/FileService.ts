@@ -1,3 +1,5 @@
+import { DocumentData } from "@/interfaces/DocumentData";
+import { SabhasadDetails } from "@/interfaces/SabhasadDetails";
 import axios from "axios";
 
 export class FileService {
@@ -17,12 +19,19 @@ export class FileService {
             {
                 headers: { 'Content-Type': 'multipart/form-data' },
                 onUploadProgress: (progressEvent) => {
-                    if(progressEvent.total)
-                    formDataObject.uploadProgress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-                  }
+                    if (progressEvent.total)
+                        formDataObject.uploadProgress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+                }
             }
         );
         return response.data
+    }
+
+    public async loadDocuments(sabhadadID: number): Promise<DocumentData | null> {
+        const response = await axios.get<SabhasadDetails>(`${this.apiUrl}sabhasadDetails/${sabhadadID}`);
+        if (response.data)
+            return response.data.document_data;
+        return null
     }
 
     detectFileType(blob: Blob): Promise<string> {

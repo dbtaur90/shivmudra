@@ -12,7 +12,7 @@ export class SabhasadService {
     return response.data;
   }
 
-  public async getSabhasadList(): Promise<ISabhasadList[]>{
+  public async getSabhasadList(): Promise<ISabhasadList[]> {
     const response = await axios.get<ISabhasadList[]>(`${this.apiUrl}sabhasad-list`);
     return response.data;
   }
@@ -50,8 +50,13 @@ export class SabhasadService {
 
   }
 
-  public async getSabhasadNameAddress(sabhasadNumber:string): Promise<any>{
+  public async getSabhasadNameAddress(sabhasadNumber: string): Promise<any> {
     const response = await axios.get<any>(`${this.apiUrl}sabhasad-name-address/${sabhasadNumber}`);
+    return response.data;
+  }
+
+  public async updateSabhasadVerificationStatus(payload: any): Promise<any> {
+    const response = await axios.post<any>(`${this.apiUrl}update-verification-status`, payload);
     return response.data;
   }
 }

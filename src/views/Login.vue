@@ -1,3 +1,7 @@
+<template>
+    <div id="otpless" class="otpless">
+    </div>
+</template>
 <script lang="ts">
 import router from '@/router';
 import { Vue } from 'vue-class-component';

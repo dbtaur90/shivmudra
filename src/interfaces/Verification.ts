@@ -6,8 +6,6 @@ export interface Verification {
     basicVerificationRemark?: string;
     documentVerification?: boolean;
     documentVerificationRemark?: string;
-    photoSignVerification?: boolean;
-    photoSignVerificationRemark?: string;
     status?: number;
     verifiedBy?: number;
     created_at?: Date;

@@ -46,6 +46,11 @@ const routes: Array<RouteRecordRaw> = [
       title: 'नियुक्ती विनंती| मराठा शिवमुद्रा प्रतिष्ठान' // Set the page title here
     },
     component: () => import('../views/PostingRequest.vue')
+  },
+  {
+    path: '/verify-documents',
+    name: 'verifyDocuments',
+    component: () => import('../views/VerifyDocuments.vue')
   }
 ]
 

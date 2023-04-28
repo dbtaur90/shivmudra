@@ -180,7 +180,7 @@
                     @change="
                       maleFemaleLabel = 'शकतो';
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                     id="inlineCheckboxgender1" value="male" required />
                   <label class="form-check-label" for="inlineCheckboxgender1">पुरुष</label>
                 </div>
@@ -190,7 +190,7 @@
                     @change="
                       maleFemaleLabel = 'शकते';
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                     id="inlineCheckboxgender2" value="female" required />
                   <label class="form-check-label" for="inlineCheckboxgender2">महिला</label>
                 </div>
@@ -269,8 +269,8 @@
                   " @change="
   onInput($event, true);
 checkValidataty($event.target);
-                                                        " class="form-control" id="permanentAddress"
-                    style="height: 60px"></textarea>
+                                                                                      " class="form-control"
+                    id="permanentAddress" style="height: 60px"></textarea>
                   <label for="permanentAddress">कायमचा पत्ता</label>
                 </div>
               </div>
@@ -281,7 +281,7 @@ checkValidataty($event.target);
                     @change="
                       loadTalukas(true, $event.target);
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                     id="pdistrict" aria-label="Floating label select example">
                     <option value="">select</option>
                     <option v-for="district in districts" :key="district.District" :value="district.District">
@@ -298,7 +298,7 @@ checkValidataty($event.target);
                     @change="
                       loadVillages(true, $event.target);
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                     id="psubDistrict" aria-label="Floating label select example">
                     <option value="">select</option>
                     <option v-for="taluka in permanentTalukasList" :key="taluka.SubDistrict" :value="taluka.SubDistrict">
@@ -332,7 +332,7 @@ checkValidataty($event.target);
                   @change="
                     currentAddressAvailablity();
                   checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                          "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                   id="isAddressSame1" v-bind:value="true" />
                 <label class="form-check-label" for="isAddressSame1">
                   वरील प्रमाणे
@@ -344,7 +344,7 @@ checkValidataty($event.target);
                   @change="
                     currentAddressAvailablity();
                   checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                      "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "
                   name="isSameAddress" id="isAddressSame2" v-bind:value="false" />
                 <label class="form-check-label" for="isAddressSame2">
                   वेगळा
@@ -362,8 +362,8 @@ checkValidataty($event.target);
                   " @change="
   onInput($event, false);
 checkValidataty($event.target);
-                                                        " class="form-control" placeholder="सध्याचा पत्ता"
-                    id="currentAddress" style="height: 60px"></textarea>
+                                                                                      " class="form-control"
+                    placeholder="सध्याचा पत्ता" id="currentAddress" style="height: 60px"></textarea>
                   <label for="currentAddress">सध्याचा पत्ता</label>
                 </div>
               </div>
@@ -374,7 +374,7 @@ checkValidataty($event.target);
                     @change="
                       loadTalukas(false, $event.target);
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                     id="cdistrict" aria-label="Floating label select example">
                     <option value="">select</option>
                     <option v-for="district in districts" :key="district.District" :value="district.District">
@@ -391,7 +391,7 @@ checkValidataty($event.target);
                     @change="
                       loadVillages(false, $event.target);
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                     id="csubDistrict" aria-label="Floating label select example">
                     <option value="">select</option>
                     <option v-for="taluka in currentTalukasList" :key="taluka.SubDistrict" :value="taluka.SubDistrict">
@@ -427,7 +427,7 @@ checkValidataty($event.target);
                   @change="
                     clearEducationData();
                   checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                      "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "
                   class="form-control" id="educationClass" placeholder="Password" list="education" />
                 <label for="educationClass">शिक्षण</label>
               </div>
@@ -487,7 +487,7 @@ checkValidataty($event.target);
                       @change="
                         clearEducationDegreeType();
                       checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "
                       v-model="
                         sabhasadDetail.education_data.educationDegreeType
                       " class="form-check-input" name="educationDegreeType" id="educationDegreeType1"
@@ -501,7 +501,7 @@ checkValidataty($event.target);
                       @change="
                         clearEducationDegreeType();
                       checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "
                       :disabled="isReadOnly ||
                         sabhasadDetail.education_data.educationClass ==
                         'Diploma'
@@ -572,7 +572,7 @@ checkValidataty($event.target);
                           @change="
                             clearEducationEngBranch();
                           checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              "
                           v-model="
                             sabhasadDetail.education_data.educationDegreeArea
                           " class="form-check-input" name="educationDegreeArea" id="educationDegreeArea"
@@ -584,7 +584,7 @@ checkValidataty($event.target);
                           @change="
                             clearEducationEngBranch();
                           checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              "
                           v-model="
                             sabhasadDetail.education_data.educationDegreeArea
                           " class="form-check-input" id="educationDegreeArea2" name="educationDegreeArea"
@@ -597,7 +597,7 @@ checkValidataty($event.target);
                           @change="
                             clearEducationEngBranch();
                           checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              "
                           v-model="
                             sabhasadDetail.education_data.educationDegreeArea
                           " class="form-check-input" name="educationDegreeArea" id="educationDegreeArea3"
@@ -610,7 +610,7 @@ checkValidataty($event.target);
                           @change="
                             clearEducationEngBranch();
                           checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              "
                           v-model="
                             sabhasadDetail.education_data.educationDegreeArea
                           " class="form-check-input" name="educationDegreeArea" id="educationDegreeArea4"
@@ -623,7 +623,7 @@ checkValidataty($event.target);
                           @change="
                             clearEducationEngBranch();
                           checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              "
                           v-model="
                             sabhasadDetail.education_data.educationDegreeArea
                           " class="form-check-input" name="educationDegreeArea" id="educationDegreeArea5"
@@ -636,7 +636,7 @@ checkValidataty($event.target);
                           @change="
                             clearEducationEngBranch();
                           checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              "
                           v-model="
                             sabhasadDetail.education_data.educationDegreeArea
                           " class="form-check-input" name="educationDegreeArea" id="educationDegreeArea6"
@@ -718,7 +718,7 @@ checkValidataty($event.target);
                     @change="
                       sabhasadDetail.competitiveExamName = null;
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                      "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "
                     v-model="sabhasadDetail.competitiveCandidate" type="radio" name="competitiveCandidate"
                     id="competitiveCandidate1" v-bind:value="false" />
                   <label class="form-check-label" for="competitiveCandidate1">नाही.</label>
@@ -748,7 +748,7 @@ checkValidataty($event.target);
                     @change="
                       clearEmployeeBusiness();
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                     type="checkbox" id="employmentType" value="Self Business" />
                   <label class="form-check-label" for="employmentType">स्वतः चा व्यवसाय</label>
                 </div>
@@ -758,7 +758,7 @@ checkValidataty($event.target);
                     @change="
                       sabhasadDetail.employee_data.traderArea = null;
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                     type="checkbox" id="employmentType1" value="Trader" />
                   <label class="form-check-label" for="employmentType1">व्यापारी</label>
                 </div>
@@ -768,7 +768,7 @@ checkValidataty($event.target);
                     @change="
                       clearEmployeeEmployee();
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                     type="checkbox" id="employmentType2" value="Employee" />
                   <label class="form-check-label" for="employmentType2">नौकरी</label>
                 </div>
@@ -778,7 +778,7 @@ checkValidataty($event.target);
                     @change="
                       clearEmployeeAgri();
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                            "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                     type="checkbox" id="employmentType3" value="Agriculture" />
                   <label class="form-check-label" for="employmentType3">शेती</label>
                 </div>
@@ -800,7 +800,7 @@ checkValidataty($event.target);
                   @change="
                     clearEmployeeBusinessArea();
                   checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                      "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "
                   class="form-control" id="businessArea" placeholder="email" list="businessList" />
                 <label for="businessArea">व्यवसायिक क्षेत्र?</label>
               </div>
@@ -813,7 +813,7 @@ checkValidataty($event.target);
                     sabhasadDetail.employee_data.businessDoctorSpecilization =
                     null;
                   checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                          "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
                   id="businessmedicalSubArea" aria-label="Floating label select example">
                   <option value="">select</option>
                   <option value="Hospital">दवाखाना</option>
@@ -854,7 +854,7 @@ checkValidataty($event.target);
                   @change="
                     clearEmployeeBusinessTeacher();
                   checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                      "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "
                   id="businessEducationPost" aria-label="Floating label select example">
                   <option value="">select</option>
                   <option value="Director">संस्थाचालक</option>
@@ -944,11 +944,8 @@ checkValidataty($event.target);
               <div class="form-floating col">
                 <input :disabled="isReadOnly" required type="text" list="employementList"
                   v-model="sabhasadDetail.employee_data.employementArea"
-                  @change="
-                    clearEmployeeEmployeeArea();
-                  checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                          "
-                  class="form-control" id="employementArea" placeholder="reference" />
+                  @change="clearEmployeeEmployeeArea(); checkValidataty($event.target);" class="form-control"
+                  id="employementArea" placeholder="reference" />
                 <label for="employementArea">नौकरीचे क्षेत्र?</label>
               </div>
             </div>
@@ -956,12 +953,9 @@ checkValidataty($event.target);
             <div class="row g-1 mb-3" v-if="sabhasadDetail.employee_data.employementArea == 'वैद्यकीय'">
               <div class="form-floating col">
                 <select :disabled="isReadOnly" required class="form-select"
-                  v-model="sabhasadDetail.employee_data.employeeMedicalSubArea"
-                  @change="
-                    clearEmployeeEmployeeDoctor();
-                  checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                          "
-                  id="employeeMedicalSubArea" aria-label="Floating label select example">
+                  v-model="sabhasadDetail.employee_data.employeeMedicalSubArea" @change="
+                    clearEmployeeEmployeeDoctor(); checkValidataty($event.target);" id="employeeMedicalSubArea"
+                  aria-label="Floating label select example">
                   <option value="">select</option>
                   <option value="Hospital">दवाखाना</option>
                   <option value="Medical">मेडिकल</option>
@@ -979,12 +973,9 @@ checkValidataty($event.target);
               <div class="form-floating col">
                 <select :disabled="isReadOnly" required class="form-select" v-model="
                   sabhasadDetail.employee_data.employeeMedicalHospitalPost
-                " @change="
-  sabhasadDetail.employee_data.employeeDoctorSpecilization =
-  null;
-checkValidataty($event.target);
-                                                      " id="employeeMedicalHospitalPost"
-                  aria-label="Floating label select example">
+                "
+                  @change="sabhasadDetail.employee_data.employeeDoctorSpecilization = null; checkValidataty($event.target);                                                                         "
+                  id="employeeMedicalHospitalPost" aria-label="Floating label select example">
                   <option value="">select</option>
                   <option value="Doctor">डॉक्टर</option>
                   <option value="Warder">परिचारक/परीचारिका</option>
@@ -1039,9 +1030,7 @@ checkValidataty($event.target);
               </div>
             </div>
 
-            <div class="row g-1 mb-3" v-if="
-              sabhasadDetail.employee_data.employeeEducationPost == 'teacher'
-            ">
+            <div class="row g-1 mb-3" v-if="sabhasadDetail.employee_data.employeeEducationPost == 'teacher'">
               <div class="form-floating col">
                 <input :disabled="isReadOnly" required type="text" @change="checkValidataty($event.target)"
                   list="education" v-model="
@@ -1051,9 +1040,7 @@ checkValidataty($event.target);
               </div>
             </div>
 
-            <div class="row g-1 mb-3" v-if="
-              sabhasadDetail.employee_data.employeeEducationPost == 'teacher'
-            ">
+            <div class="row g-1 mb-3" v-if="sabhasadDetail.employee_data.employeeEducationPost == 'teacher'">
               <div class="form-floating col">
                 <input :disabled="isReadOnly" required type="text" @change="checkValidataty($event.target)" v-model="
                   sabhasadDetail.employee_data
@@ -1064,21 +1051,8 @@ checkValidataty($event.target);
             </div>
 
             <div v-if="sabhasadDetail.employee_data.employementArea">
-              <div class="row g-1 mb-3" v-if="
-                [
-                  'कायदेविषयक',
-                  'प्रशासकीय अधिकारी',
-                  'लोकप्रतिनिधी',
-                  'पोलिस',
-                  'बँक',
-                  'चित्रपट',
-                  'संगणकीय सेवा',
-                  'ग्राफिक्स डिझाईन',
-                  'कृषी',
-                  'हॉटेल',
-                  'मांस',
-                ].includes(sabhasadDetail.employee_data.employementArea)
-              ">
+              <div class="row g-1 mb-3"
+                v-if="['कायदेविषयक', 'प्रशासकीय अधिकारी', 'लोकप्रतिनिधी', 'पोलिस', 'बँक', 'चित्रपट', 'संगणकीय सेवा', 'ग्राफिक्स डिझाईन', 'कृषी', 'हॉटेल', 'मांस',].includes(sabhasadDetail.employee_data.employementArea)">
                 <div class="form-floating col">
                   <input :disabled="isReadOnly" required type="text" @change="checkValidataty($event.target)"
                     v-model="sabhasadDetail.employee_data.employeePost" class="form-control" id="employeePost"
@@ -1097,9 +1071,7 @@ checkValidataty($event.target);
               </div>
             </div>
 
-            <div class="row g-1 mb-3" v-if="
-              sabhasadDetail.employee_data.employmentType.includes('Trader')
-            ">
+            <div class="row g-1 mb-3" v-if="sabhasadDetail.employee_data.employmentType.includes('Trader')">
               <div class="form-floating col">
                 <input :disabled="isReadOnly" required type="text" @change="checkValidataty($event.target)"
                   v-model="sabhasadDetail.employee_data.traderArea" class="form-control" id="traderArea"
@@ -1108,11 +1080,7 @@ checkValidataty($event.target);
               </div>
             </div>
 
-            <div class="row g-1 mb-3" v-if="
-              sabhasadDetail.employee_data.employmentType.includes(
-                'Agriculture'
-              )
-            ">
+            <div class="row g-1 mb-3" v-if="sabhasadDetail.employee_data.employmentType.includes('Agriculture')">
               <div class="form-floating col">
                 <input :disabled="isReadOnly" required type="text" @change="checkValidataty($event.target)"
                   v-model="sabhasadDetail.employee_data.agricultureMainCrops" class="form-control"
@@ -1132,20 +1100,17 @@ checkValidataty($event.target);
               <div class="col-8">
                 <div class="form-check form-check-inline">
                   <input :disabled="isReadOnly" required class="form-check-input" v-model="
-                    sabhasadDetail.employee_data.isAgricultureCumBusiness
-                  " type="radio" @change="checkValidataty($event.target)" id="isAgricultureCumBusiness"
-                    name="isAgricultureCumBusiness" v-bind:value="true" />
+                    sabhasadDetail.employee_data.isAgricultureCumBusiness" type="radio"
+                    @change="checkValidataty($event.target)" id="isAgricultureCumBusiness" name="isAgricultureCumBusiness"
+                    v-bind:value="true" />
                   <label class="form-check-label" for="isAgricultureCumBusiness">हो</label>
                 </div>
                 <div class="form-check form-check-inline">
                   <input :disabled="isReadOnly" required class="form-check-input" v-model="
                     sabhasadDetail.employee_data.isAgricultureCumBusiness
-                  " type="radio" @change="
-  sabhasadDetail.employee_data.agricultureCumBusinessName ==
-  null;
-checkValidataty($event.target);
-                                                        " name="isAgricultureCumBusiness" id="isAgricultureCumBusiness1"
-                    v-bind:value="false" />
+                  " type="radio"
+                    @change="sabhasadDetail.employee_data.agricultureCumBusinessName == null; checkValidataty($event.target);"
+                    name="isAgricultureCumBusiness" id="isAgricultureCumBusiness1" v-bind:value="false" />
                   <label class="form-check-label" for="isAgricultureCumBusiness1">नाही</label>
                 </div>
               </div>
@@ -1181,7 +1146,7 @@ checkValidataty($event.target);
                     @change="
                       clearPolyticalPartyDetail();
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                                "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
                     name="isPoliticalBackground" id="isPoliticalBackground1" v-bind:value="false" />
                   <label class="form-check-label" for="isPoliticalBackground1">नाही</label>
                 </div>
@@ -1220,10 +1185,7 @@ checkValidataty($event.target);
                 <div class="form-check form-check-inline">
                   <input :disabled="isReadOnly" required class="form-check-input"
                     v-model="sabhasadDetail.isSocialBackground" type="radio" name="isSocialBackground"
-                    @change="
-                      clearSocialFoundationDetail();
-                    checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                                "
+                    @change="clearSocialFoundationDetail(); checkValidataty($event.target);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "
                     id="isSocialBackground1" v-bind:value="false" />
                   <label class="form-check-label" for="isSocialBackground1">नाही</label>
                 </div>
@@ -1375,7 +1337,6 @@ checkValidataty($event.target);
 
           </form>
           <progress max="100" :value="formDataObject.uploadProgress">
-
           </progress>
         </div>
         <div class="tab">
@@ -1557,10 +1518,7 @@ export default class RegisterSabhasad extends Vue {
     this.$watch(
       () => this.sabhasadDetail,
       () => {
-        localStorage.setItem(
-          "sabhasadDetails",
-          JSON.stringify(this.sabhasadDetail)
-        );
+        localStorage.setItem("sabhasadDetails", JSON.stringify(this.sabhasadDetail));
       },
       { deep: true }
     );
@@ -1820,7 +1778,7 @@ export default class RegisterSabhasad extends Vue {
         // eslint-disable-next-line no-undef
       ) as HTMLCollectionOf<HTMLElement>;
       x[n].style.display = "block";
-      this.hidePreviousButton = [0,6].includes(n)
+      this.hidePreviousButton = [0, 6].includes(n)
       switch (n) {
         case 0:
           this.nextButtonText = "मला मान्य आहे";
