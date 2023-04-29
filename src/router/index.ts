@@ -1,5 +1,16 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteLocationNormalized, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { Utilities } from '@/functionality/Utilities';
+
+const utilities = new Utilities();
+const requireAuth = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: any) => {
+  const routeName = to.name as string;
+  if (utilities.isAuthenticated(routeName)) {
+    next();
+  } else {
+    next({ name: 'login' });
+  }
+};
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -27,7 +38,8 @@ const routes: Array<RouteRecordRaw> = [
     path: '/sabhasad-list',
     name: 'SabhasadList',
     meta: {
-      title: 'सभासद यादी| मराठा शिवमुद्रा प्रतिष्ठान' // Set the page title here
+      title: 'सभासद यादी| मराठा शिवमुद्रा प्रतिष्ठान',
+      requiresAuth: true
     },
     component: () => import('../views/SabhasadList.vue')
   },
@@ -63,5 +75,12 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    requireAuth(to, from, next);
+  } else {
+    next();
+  }
+});
 
 export default router

@@ -91,7 +91,7 @@
 
 @media only screen and (max-width: 767px) {
     .header .header-bottom .menu ul li a {
-        margin-right: 15px;
+        margin-right: 5px;
         padding-left: 15px;
     }
 

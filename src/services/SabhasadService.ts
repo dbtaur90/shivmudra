@@ -1,11 +1,19 @@
 import axios from 'axios';
 import { SabhasadDetails } from '../interfaces/SabhasadDetails';
 import { ISabhasadList } from '@/interfaces/ISabhasadList';
+import { useAuthStore } from '@/stores/AuthStore';
+import router from '@/router';
+import { LoggedUser } from '@/interfaces/LoggedUser';
 
 export class SabhasadService {
+  private baseApiUrl = 'https://marathashivmudra.co.in/api/';
   private apiUrl = 'https://marathashivmudra.co.in/api/sabhasad/';
+  private authStore = useAuthStore();
+  private token = '';
   constructor() {
-    axios.defaults.headers.common['token'] = '2e912f0031fa463c90426b49164e4291';
+    this.token = this.authStore.authToken
+    if (this.token.trim().length > 5)
+      axios.defaults.headers.common['token'] = this.token;
   }
 
   public async getUsers(sabhadadID: number): Promise<SabhasadDetails> {
@@ -64,6 +72,14 @@ export class SabhasadService {
 
   public async updateSabhasadVerificationStatus(payload: any): Promise<any> {
     const response = await axios.post<any>(`${this.apiUrl}update-verification-status`, payload);
+    return response.data;
+  }
+
+  public async login(token?: string | null): Promise<LoggedUser> {
+    if (!token) {
+      router.push({ path: '/login' })
+    }
+    const response = await axios.post<LoggedUser>(`${this.baseApiUrl}login`);
     return response.data;
   }
 }

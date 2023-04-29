@@ -19,21 +19,27 @@
     <section class="header-bottom">
       <div class="container">
         <span style="position: absolute; right: 0; color: #7fffff">
-          नोंदणी क्र : महा./मुंबई/1225/2021</span
-        >
+          नोंदणी क्र : महा./मुंबई/1225/2021</span>
         <div class="row">
           <div class="col-md-5 col-sm-12 col-xs-12">
-            <div class="main-logo">
+            <div class="main-logo text-start">
               <img src="./../assets/styles/img/1.png" alt="" />
-              <span class="logo-text"
-                ><br class="special-br" />
-                मराठा शिवमुद्रा प्रतिष्ठान</span
-              >
+              <span class="logo-text"><br class="special-br" />
+                मराठा शिवमुद्रा प्रतिष्ठान</span>
             </div>
           </div>
           <div class="col-md-7 col-sm-12 col-xs-12">
             <div class="menu">
               <ul class="nav">
+                <li class="nav-item">
+                  <button class="btn text-white d-sm-none" type="button" @click="$emit('menu-click')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-border-width" viewBox="0 0 16 16">
+                      <path
+                        d="M0 3.5A.5.5 0 0 1 .5 3h15a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-2zm0 5A.5.5 0 0 1 .5 8h15a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z" />
+                    </svg>
+                  </button>
+                </li>
                 <li class="nav-item active">
                   <a class="nav-link" href="#">मुख्यपृष्ठ</a>
                 </li>
@@ -58,9 +64,11 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 
-export default class HeaderView extends Vue {}
+export default class HeaderView extends Vue { }
 </script>
 
-<style>
-
+<style scoped>
+.row, .row * {
+  padding-left: 0;
+}
 </style>

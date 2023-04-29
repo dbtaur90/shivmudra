@@ -62,27 +62,38 @@
 <script lang="ts">
 import router from '@/router';
 import { Vue } from 'vue-class-component';
-
+import { SabhasadService } from '@/services/SabhasadService'
+import { useAuthStore } from '@/stores/AuthStore';
 declare global {
     interface Window {
         otpless: any;
     }
 }
 export default class SabhasadList extends Vue {
+    private service!: SabhasadService;
+    private verifyStore = useAuthStore();
     mounted(): void {
+        this.service = new SabhasadService();
         const script = document.createElement('script')
         script.src = 'https://otpless.com/auth.js';
         document.body.appendChild(script);
         window.otpless = (otplessUser: any) => {
-            console.log(otplessUser);
+            this.service.login(otplessUser.token).then(data => {
+                if (data && data.level && data.level > 0)
+                    this.verifyStore.$state.authToken = otplessUser.token;
+                this.verifyStore.$state.isSet = true;
+                this.verifyStore.$state.loggedUser = data
+            }).catch((e) => {
+                alert(e);
+            })
             // Retrieve the user's details after successful login
             const waName = otplessUser.waName;
             const waNumber = otplessUser.waNumber;
             alert(waName + ' ' + waNumber);
             // Handle the signup/signin process
             // ...
-            if (waNumber == '9028744682')
-                router.push({ path: '/sabhasad-list' })
+
+
         }
     }
 }

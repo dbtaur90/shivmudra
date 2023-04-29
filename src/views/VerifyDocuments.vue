@@ -152,6 +152,7 @@ import { Verification } from "@/interfaces/Verification";
 import router from "@/router";
 import { useRoute } from "vue-router";
 import { useVerifyDocumentStore } from "@/stores/VerifyDocumentStore";
+import { useAuthStore } from "@/stores/AuthStore"
 
 interface BasicData {
     aadhar?: number | null;
@@ -171,6 +172,7 @@ interface BasicData {
 export default class VerifyDocuments extends Vue {
     @Ref("formWrapper") readonly formWrapper!: HTMLElement | null;
     private verifyStore = useVerifyDocumentStore()
+    private authStore = useAuthStore();
     sabhasadID = -1;
     verificationId = 0;
     isVerification = false;
@@ -204,6 +206,10 @@ export default class VerifyDocuments extends Vue {
             this.isDocs = this.verifyStore.isDocumentsUploaded
             this.isVerification = this.verifyStore.isVerification
             this.verifyStore.clearValues();
+        }
+        if (this.isVerification) {
+            if (!(this.authStore.$state.loggedUser && Number(this.authStore.$state.loggedUser) > 0))
+                router.replace({ name: 'login' })
         }
         if (!this.sabhasadID || this.sabhasadID <= 0)
             router.replace({ path: '/sabhasad-list' })

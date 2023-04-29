@@ -1,11 +1,17 @@
 <template>
-  <header-view/>
+  <header-view @menu-click="toggleSidebar" />
+  <side-bar :show-sidebar="showSidebar" />
+  <div class="row" @click=" showSidebar = false ">
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" :class="{backdrop: showSidebar}">
+      <router-view />
+    </main>
+  </div>
+ 
+
   <!-- <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav> -->
-  <router-view/>
-  <div> Version: 1.03</div>
 </template>
 
 <style>
@@ -13,6 +19,7 @@
 @import './assets/styles/css2.css';
 @import './assets/styles/font-awesome.min.css';
 @import './assets/styles/responsive.css';
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -33,22 +40,36 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 8;
+  pointer-events: none;
+}
 </style>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import HeaderView from './views/HeaderView.vue';
+import SideBar from './components/SideBar.vue';
 
 @Options({
   components: {
     HeaderView,
+    SideBar
   },
 })
 export default class App extends Vue {
+  showSidebar = false;
   created() {
     if (window.location.hash) {
       window.location.href = window.location.href.replace('/#', '');
     }
+
   }
+  toggleSidebar() {
+    this.showSidebar = !this.showSidebar
+  }
+
 }
 </script>
