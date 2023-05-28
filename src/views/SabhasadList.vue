@@ -8,6 +8,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Document</th>
                     <th scope="col">Basic </th>
+                    <th scope="col"> पद </th>
                 </tr>
             </thead>
             <tbody>
@@ -16,9 +17,10 @@
                     <td scope="row">{{ index + 1 }}</td>
 
                     <td>
-                        <div v-if="reference.verification && (reference.verification.status == 1 || reference.verification.status == 2)">
+                        <div
+                            v-if="reference.verification && (reference.verification.status == 1 || reference.verification.status == 2)">
                             <button v-if="!!!reference.verification.sabhasadNumber" type="button" class="btn btn-link"
-                                @click="generateSabhasadNumber(reference.verification.id)">
+                                @click="generateSabhasadNumber(reference.verification.id, reference.sabhasadID)">
                                 सभासद क्रमांक अपडेट करा </button>
                             <span v-else>
                                 {{ reference.verification?.sabhasadNumber }}
@@ -26,7 +28,11 @@
                         </div>
 
                     </td>
-                    <td>{{ reference.name }}</td>
+                    <td> <button type="button" @click="navigateRoute(reference, 'registration', false)"
+                            class="btn btn-link"> {{
+                                reference.name }}
+                        </button>
+                    </td>
                     <td colspan="2" v-if="!reference.isDocumentUploaded">
                         <button type="button" class="btn btn-link"
                             @click="sendToWhatsapp(reference.sabhasadID, reference.whatsappNumber)">
@@ -59,6 +65,17 @@
                                 type="button">पडताळा</button>
                         </div>
                     </td>
+                    <td>
+                        <div v-if="reference.verification && reference.verification.sabhasadNumber">
+                            <span
+                                :class="{ 'text-success': reference.exStatus == 1, 'text-warning': reference.exStatus == 2 }"
+                                v-if="reference.exStatus && (reference.exStatus == 1 || reference.exStatus == 2)">
+                                {{ reference.title }}
+                            </span>
+                            <button v-else @click="navigateToPosting(reference.verification.sabhasadNumber)"
+                                class="btn btn-link" type="button">नियुक्ती काढा</button>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -70,6 +87,7 @@ import { SabhasadService } from "@/services/SabhasadService";
 import { ISabhasadList } from '@/interfaces/ISabhasadList';
 import { useVerifyDocumentStore } from '@/stores/VerifyDocumentStore';
 import router from '@/router';
+import { useAuthStore } from '@/stores/AuthStore';
 declare global {
     interface Window {
         otpless: any;
@@ -79,18 +97,30 @@ declare global {
 export default class SabhasadList extends Vue {
 
     sabhasadList: ISabhasadList[] = [];
+    isPostingAllowed = false;
     private verifyStore = useVerifyDocumentStore();
+    private authStore = useAuthStore();
     private service!: SabhasadService;
     async mounted(): Promise<void> {
+        if (this.authStore.$state.loggedUser.post)
+            this.isPostingAllowed = ['अध्यक्ष', 'उपाध्यक्ष', 'सचिव'].includes(this.authStore.$state.loggedUser.post);
+        else{
+            this.authStore.logout();
+            router.replace({name:'login'});
+        }
         // Define the 'otpless' function
         this.service = new SabhasadService();
         document.title = "सभासद यादी| मराठा शिवमुद्रा प्रतिष्ठान"
         this.sabhasadList = await this.service.getSabhasadList();
     }
 
-    navigateRoute(reference: ISabhasadList, nextRoute: string) {
+    navigateToPosting(sabhasadNumber: string) {
+        router.push({ name: 'postRequest', query: { sn: this.urlSafeBase64Encode(sabhasadNumber) } });
+    }
+
+    navigateRoute(reference: ISabhasadList, nextRoute: string, isVerification = true) {
         if (reference.sabhasadID)
-            this.verifyStore.setValues(reference.sabhasadID, reference.verification?.id, true, reference.isDocumentUploaded);
+            this.verifyStore.setValues(reference.sabhasadID, reference.verification?.id, isVerification, reference.isDocumentUploaded);
         router.push({ name: nextRoute });
     }
 
@@ -103,10 +133,10 @@ export default class SabhasadList extends Vue {
         location.href = whatsappLink;
     }
 
-    async generateSabhasadNumber(verificationID?: number) {
-        if (verificationID){
-            const result = await this.service.generateSabhasadNumber(verificationID);
-            if(result.mailSent){
+    async generateSabhasadNumber(verificationID?: number, sabhasadID?: number) {
+        if (verificationID && sabhasadID) {
+            const result = await this.service.generateSabhasadNumber(verificationID, sabhasadID);
+            if (result.mailSent) {
                 alert(`${result.name} यांचा सभासद क्रमांक ${result.sabhasadNumber} यशस्वीरित्या तयार झाला आहे. `);
             }
         }

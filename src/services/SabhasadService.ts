@@ -9,26 +9,31 @@ export class SabhasadService {
   private baseApiUrl = 'https://marathashivmudra.co.in/api/';
   private apiUrl = 'https://marathashivmudra.co.in/api/sabhasad/';
   private authStore = useAuthStore();
-  private token = '';
-  constructor() {
-    this.token = this.authStore.authToken
-    if (this.token.trim().length > 5)
-      axios.defaults.headers.common['token'] = this.token;
-  }
+
 
   public async getUsers(sabhadadID: number): Promise<SabhasadDetails> {
     const response = await axios.get<SabhasadDetails>(`${this.apiUrl}sabhasadDetails/${sabhadadID}`);
-    // localStorage.setItem('freshSabhasadDetail', JSON.stringify(response.data));
     return response.data;
   }
 
   public async getSabhasadList(): Promise<ISabhasadList[]> {
-    const response = await axios.get<ISabhasadList[]>(`${this.apiUrl}sabhasad-list`);
-    return response.data;
+    const headers = this.getHeaders();
+    const response = await axios.get<ISabhasadList[]>(`${this.apiUrl}sabhasad-list`, { headers: headers });
+    if (response.status >= 200 && response.status < 300) {
+      return response.data;
+    }
+    else if (response.status >= 500 && response.status < 600)
+      return [];
+    else {
+      this.authStore.logout();
+      router.replace({ name: 'login' })
+      return [];
+    }
   }
 
-  public async generateSabhasadNumber(vid: number): Promise<any> {
-    const response = await axios.post<any>(`${this.apiUrl}generate-sabhasad-number`, { verificationID: vid });
+  public async generateSabhasadNumber(vid: number, sid: number): Promise<any> {
+    const headers = this.getHeaders();
+    const response = await axios.post<any>(`${this.apiUrl}generate-sabhasad-number`, { verificationID: vid, sabhasadID: sid }, { headers: headers });
     return response.data;
   }
 
@@ -66,20 +71,33 @@ export class SabhasadService {
   }
 
   public async getSabhasadNameAddress(sabhasadNumber: string): Promise<any> {
-    const response = await axios.get<any>(`${this.apiUrl}sabhasad-name-address/${sabhasadNumber}`);
+    const headers = this.getHeaders();
+    const response = await axios.get<any>(`${this.apiUrl}sabhasad-name-address/${sabhasadNumber}`, { headers: headers });
     return response.data;
   }
 
   public async updateSabhasadVerificationStatus(payload: any): Promise<any> {
-    const response = await axios.post<any>(`${this.apiUrl}update-verification-status`, payload);
+    const headers = this.getHeaders();
+    const response = await axios.post<any>(`${this.apiUrl}update-verification-status`, payload, { headers: headers });
     return response.data;
   }
-
   public async login(token?: string | null): Promise<LoggedUser> {
     if (!token) {
       router.push({ path: '/login' })
     }
-    const response = await axios.post<LoggedUser>(`${this.baseApiUrl}login`);
+    const headers = this.getHeaders(token);
+
+    const response = await axios.post<LoggedUser>(`${this.baseApiUrl}login`, null, { headers: headers });
     return response.data;
+  }
+
+  getHeaders(token?: string | null) {
+    if (!token)
+      token = this.authStore.$state.authToken
+    if (token.trim().length > 5) {
+      return {
+        'token': token
+      }
+    }
   }
 }

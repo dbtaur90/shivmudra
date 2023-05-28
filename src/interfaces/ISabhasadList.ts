@@ -5,5 +5,7 @@ export interface ISabhasadList {
     name?: string,
     whatsappNumber?: string
     isDocumentUploaded?: boolean,
-    verification?: Verification
+    verification?: Verification,
+    title?: string,
+    exStatus?: number
 }

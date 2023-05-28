@@ -200,6 +200,7 @@ export default class VerifyDocuments extends Vue {
         if (route.query && route.query.sid) {
             this.sabhasadID = Number(this.urlSafeBase64Decode(route.query.sid.toString()));
         }
+      //  debugger;
         if (this.verifyStore.isSet) {
             this.sabhasadID = this.verifyStore.sabhasadID
             this.verificationId = this.verifyStore.verificationID
@@ -208,7 +209,7 @@ export default class VerifyDocuments extends Vue {
             this.verifyStore.clearValues();
         }
         if (this.isVerification) {
-            if (!(this.authStore.$state.loggedUser && Number(this.authStore.$state.loggedUser) > 0))
+            if (!(this.authStore.$state.loggedUser && Number(this.authStore.$state.loggedUser.level) > 0))
                 router.replace({ name: 'login' })
         }
         if (!this.sabhasadID || this.sabhasadID <= 0)

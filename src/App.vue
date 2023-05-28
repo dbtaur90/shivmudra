@@ -1,9 +1,10 @@
 <template>
   <header-view @menu-click="toggleSidebar" />
-  <side-bar :show-sidebar="showSidebar" />
+  <side-bar  @menu-click="showSidebar = false" v-if="authStore.$state.isSet" :show-sidebar="showSidebar" />
   <div class="row" @click=" showSidebar = false ">
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" :class="{backdrop: showSidebar}">
       <router-view />
+      version 1.0.11
     </main>
   </div>
  
@@ -52,6 +53,7 @@ nav a.router-link-exact-active {
 import { Options, Vue } from 'vue-class-component';
 import HeaderView from './views/HeaderView.vue';
 import SideBar from './components/SideBar.vue';
+import { useAuthStore } from './stores/AuthStore';
 
 @Options({
   components: {
@@ -60,8 +62,11 @@ import SideBar from './components/SideBar.vue';
   },
 })
 export default class App extends Vue {
+  authStore  = useAuthStore();
   showSidebar = false;
+  enableSidebar = false;
   created() {
+
     if (window.location.hash) {
       window.location.href = window.location.href.replace('/#', '');
     }

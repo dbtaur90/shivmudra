@@ -128,8 +128,6 @@
               </div>
             </div>
             <div class="row g-1 mb-3">
-              <label class="form-label" style="text-align: left">आपले संपूर्ण नाव:
-              </label>
               <div class="form-floating col">
                 <input :disabled="isReadOnly" required type="text" @change="checkValidataty($event.target)"
                   v-model="sabhasadDetail.firstName" class="form-control" id="firstName" placeholder="Password" />
@@ -177,7 +175,7 @@
                     name="gender"
                     @change="maleFemaleLabel = 'शकतो';
                     checkValidataty($event.target);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "
                     id="inlineCheckboxgender1" value="male" required />
                   <label class="form-check-label" for="inlineCheckboxgender1">पुरुष</label>
                 </div>
@@ -231,7 +229,7 @@
                 <input :disabled=" isReadOnly " type="tel" @change=" checkValidataty($event.target) "
                   v-model=" sabhasadDetail.mobileNumber " class="form-control" id="inputPassword4"
                   pattern="(6|7|8|9)\d{9}" placeholder="Password" />
-                <label for="inputPassword4" class="form-label">Alternative Mobile Number(असल्यास)</label>
+                <label for="inputPassword4">Alternative Mobile Number(असल्यास)</label>
               </div>
             </div>
 
@@ -247,7 +245,7 @@
                 <input :disabled=" isReadOnly " required type="tel" @change=" checkValidataty($event.target) "
                   v-model=" sabhasadDetail.aadhar " class="form-control" id="aadhar" pattern="\d{12}"
                   placeholder="Password" />
-                <label for="aadhar" class="form-label">आधार नंबर</label>
+                <label for="aadhar">आधार नंबर</label>
               </div>
             </div>
           </form>
@@ -277,7 +275,7 @@
                       checkValidataty($event.target);
                     " id="pdistrict" aria-label="Floating label select example">
                     <option value="">select</option>
-                    <option v-for="               district                in                districts               "
+                    <option v-for="                 district                  in                  districts                 "
                       :key=" district.District " :value=" district.District ">
                       {{ district.DistrictMr }}
                     </option>
@@ -293,7 +291,8 @@
                       checkValidataty($event.target);
                     " id="psubDistrict" aria-label="Floating label select example">
                     <option value="">select</option>
-                    <option v-for="               taluka                in                permanentTalukasList               "
+                    <option
+                      v-for="                 taluka                  in                  permanentTalukasList                 "
                       :key=" taluka.SubDistrict " :value=" taluka.SubDistrict ">
                       {{ taluka.SubDistrictMr }}
                     </option>
@@ -307,7 +306,8 @@
                     v-model=" sabhasadDetail.permanentVillage " @change=" checkValidataty($event.target) " id="pvillage"
                     aria-label="Floating label select example">
                     <option value="">select</option>
-                    <option v-for="               village                in                permentVillageList               "
+                    <option
+                      v-for="                 village                  in                  permentVillageList                 "
                       :key=" village.AddressDirectoryID " :value=" village.AddressDirectoryID ">
                       {{ village.VillageMr }}
                     </option>
@@ -364,7 +364,7 @@
                       checkValidataty($event.target);
                     " id="cdistrict" aria-label="Floating label select example">
                     <option value="">select</option>
-                    <option v-for="               district                in                districts               "
+                    <option v-for="                 district                  in                  districts                 "
                       :key=" district.District " :value=" district.District ">
                       {{ district.DistrictMr }}
                     </option>
@@ -380,7 +380,8 @@
                       checkValidataty($event.target);
                     " id="csubDistrict" aria-label="Floating label select example">
                     <option value="">select</option>
-                    <option v-for="               taluka                in                currentTalukasList               "
+                    <option
+                      v-for="                 taluka                  in                  currentTalukasList                 "
                       :key=" taluka.SubDistrict " :value=" taluka.SubDistrict ">
                       {{ taluka.SubDistrictMr }}
                     </option>
@@ -394,7 +395,8 @@
                     v-model=" sabhasadDetail.currentVillage " @change=" checkValidataty($event.target) " id="cvillage"
                     aria-label="Floating label select example">
                     <option value="">select</option>
-                    <option v-for="               village                in                currentVillageList               "
+                    <option
+                      v-for="                 village                  in                  currentVillageList                 "
                       :key=" village.AddressDirectoryID " :value=" village.AddressDirectoryID ">
                       {{ village.VillageMr }}
                     </option>
@@ -1313,11 +1315,13 @@ export default class RegisterSabhasad extends Vue {
   cfv!: ClearFormValues;
   verificationId = -1;
   async mounted(): Promise<void> {
-
     if (this.verifyStore.isSet) {
       this.sabhasadDetail.sabhasadID = this.verifyStore.sabhasadID
       this.verificationId = this.verifyStore.verificationID
-      this.isVerification = this.verifyStore.isVerification
+      if (this.verifyStore.$state.isVerification)
+        this.isVerification = true;
+      else
+        this.isReadOnly = true;
     }
     //npm installthis.$tore.dispatch('getUser');
     document.title = "सभासद नोंदणी| मराठा शिवमुद्रा प्रतिष्ठान"
@@ -1338,7 +1342,7 @@ export default class RegisterSabhasad extends Vue {
   async loadSabhasadDetails() {
     const service = new SabhasadService();
     const fileService = new FileService();
-    if (this.isVerification && this.sabhasadDetail.sabhasadID) {
+    if ((this.isVerification || this.isReadOnly) && this.sabhasadDetail.sabhasadID) {
       this.currentTab = 1
       localStorage.removeItem("sabhasadDetails");
       localStorage.removeItem("currentTab");
@@ -1460,8 +1464,14 @@ export default class RegisterSabhasad extends Vue {
         "tab"
         // eslint-disable-next-line no-undef
       ) as HTMLCollectionOf<HTMLElement>;
-      if (n == 1 && this.currentTab == 7)
-        this.hidePreNextDiv = true;
+      if (this.currentTab == 6) {
+        this.verifyStore.isVerification = false
+        this.verifyStore.isDocumentsUploaded = false
+        this.verifyStore.isSet = true;
+        this.verifyStore.$state.sabhasadID = Number(this.sabhasadDetail.sabhasadID);
+        router.push({ name: 'verifyDocuments' });
+      }
+
       /* if (n == 1 && !validateForm()) return false; */
       if (n == 1 && this.currentTab > 0) {
         let form = this.$refs["basicForm" + this.currentTab] as HTMLFormElement;
@@ -1472,9 +1482,13 @@ export default class RegisterSabhasad extends Vue {
         invalidControls.forEach((element) => this.checkValidataty(element));
         if (!form.reportValidity()) return;
       }
-      if (n == 1 && this.currentTab == 5 && this.isSave) {
+      if (n == 1 && this.currentTab == 5) {
         this.hideNextButton = true;
         this.hidePreviousButton = true
+        if (this.isReadOnly){
+          router.back();
+          return;
+        }
         let service = new SabhasadService();
         this.sabhasadDetail.sabhasadID = await service.updateUser(this.sabhasadDetail);
         if (this.isVerification) {
@@ -1483,17 +1497,18 @@ export default class RegisterSabhasad extends Vue {
             sabhasadID: this.sabhasadDetail.sabhasadID,
             basicVerification: true,
             basicVerificationRemark: this.verificationRemark,
-            status:2
+            status: 2
           }
           await service.updateSabhasadVerificationStatus(payload);
           this.verifyStore.clearValues();
           router.replace({ path: '/sabhasad-list' })
         }
         else {
-          router.push({ name: 'verifyDocuments' });
           this.verifyStore.isVerification = false
           this.verifyStore.isDocumentsUploaded = false
           this.verifyStore.isSet = true;
+          this.verifyStore.$state.sabhasadID = this.sabhasadDetail.sabhasadID
+          router.push({ name: 'verifyDocuments' });
         }
       }
 

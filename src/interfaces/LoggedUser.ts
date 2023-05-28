@@ -6,5 +6,5 @@ export interface LoggedUser{
     level?: number,
     operationalArea?: number,
     title?: string,
-    photoImage?: number
+    photoImage?: string
 }

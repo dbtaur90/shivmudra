@@ -31,7 +31,7 @@
           <div class="col-md-7 col-sm-12 col-xs-12">
             <div class="menu">
               <ul class="nav">
-                <li class="nav-item">
+                <li class="nav-item" v-if="authStore.$state.isSet">
                   <button class="btn text-white d-sm-none" type="button" @click="$emit('menu-click')">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                       class="bi bi-border-width" viewBox="0 0 16 16">
@@ -39,6 +39,9 @@
                         d="M0 3.5A.5.5 0 0 1 .5 3h15a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-2zm0 5A.5.5 0 0 1 .5 8h15a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z" />
                     </svg>
                   </button>
+                </li>
+                <li class="nav-item" v-else>
+                  <router-link to="/login" class="nav-link">Login</router-link>
                 </li>
                 <li class="nav-item active">
                   <a class="nav-link" href="#">मुख्यपृष्ठ</a>
@@ -63,8 +66,10 @@
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
-
-export default class HeaderView extends Vue { }
+import { useAuthStore } from '@/stores/AuthStore';
+export default class HeaderView extends Vue { 
+  authStore  = useAuthStore();
+}
 </script>
 
 <style scoped>

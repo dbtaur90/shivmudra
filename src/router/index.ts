@@ -55,9 +55,20 @@ const routes: Array<RouteRecordRaw> = [
     path: '/posting-request',
     name: 'postRequest',
     meta: {
-      title: 'नियुक्ती विनंती| मराठा शिवमुद्रा प्रतिष्ठान' // Set the page title here
+      title: 'नियुक्ती विनंती| मराठा शिवमुद्रा प्रतिष्ठान',
+      requiresAuth: true
     },
     component: () => import('../views/PostingRequest.vue')
+  },
+
+  {
+    path: '/posting-request-list',
+    name: 'postRequestList',
+    meta: {
+      title: 'नियुक्ती विनंती| मराठा शिवमुद्रा प्रतिष्ठान',
+      requiresAuth: true
+    },
+    component: () => import('../views/PostingRequestList.vue')
   },
   {
     path: '/verify-documents',

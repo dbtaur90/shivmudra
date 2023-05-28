@@ -1,6 +1,6 @@
 <template>
-    <div>
-
+    <div class="custom-margin">
+        <span>{{ token }}</span>
         <!-- <form id="formWrapper" class="form-wrapper" ref="basicForm6">
             <div class="form-group text-start focused mt-4">
                 <label class="form-label" for="aadhar"> सभासद नंबर</label>
@@ -72,28 +72,46 @@ declare global {
 export default class SabhasadList extends Vue {
     private service!: SabhasadService;
     private verifyStore = useAuthStore();
+    token = ''
     mounted(): void {
         this.service = new SabhasadService();
-        const script = document.createElement('script')
-        script.src = 'https://otpless.com/auth.js';
-        document.body.appendChild(script);
-        window.otpless = (otplessUser: any) => {
-            this.service.login(otplessUser.token).then(data => {
+        const isLocalhost = window.location.host.includes('localhost') || window.location.host.includes('192.');
+        if (isLocalhost) {
+            this.service.login('b7b00eecd9134de4aeba4845d41c5cfd').then(data => {
                 if (data && data.level && data.level > 0)
-                    this.verifyStore.$state.authToken = otplessUser.token;
+                    this.verifyStore.$state.authToken = 'b7b00eecd9134de4aeba4845d41c5cfd';
                 this.verifyStore.$state.isSet = true;
                 this.verifyStore.$state.loggedUser = data
+                router.replace({ name: 'home' })
             }).catch((e) => {
                 alert(e);
             })
-            // Retrieve the user's details after successful login
-            const waName = otplessUser.waName;
-            const waNumber = otplessUser.waNumber;
-            alert(waName + ' ' + waNumber);
-            // Handle the signup/signin process
-            // ...
+        }
+        else {
+            const script = document.createElement('script')
+            script.src = 'https://otpless.com/auth.js';
+            document.body.appendChild(script);
+            window.otpless = (otplessUser: any) => {
+              //  this.verifyStore.$state.authToken =  otplessUser.token;
+                this.service.login(otplessUser.token).then(data => {
+                    if (data && data.level && data.level > 0)
+                        this.verifyStore.$state.authToken = otplessUser.token;
+                    this.verifyStore.$state.isSet = true;
+                    this.verifyStore.$state.loggedUser = data
+                    router.replace({ name: 'home' })
+                }).catch((e) => {
+                    alert(e);
+                })
+                // Retrieve the user's details after successful login
+                const waName = otplessUser.waName;
+                const waNumber = otplessUser.waNumber;
+                this.token = otplessUser.token
+                alert(waName + ' ' + waNumber);
+                // Handle the signup/signin process
+                // ...
 
 
+            }
         }
     }
 }
@@ -239,5 +257,9 @@ button {
 
 .invalid {
     border: 1px solid red !important;
+}
+.custom-margin{
+    margin-top: 100px;
+    margin-left: 50px;
 }
 </style>
