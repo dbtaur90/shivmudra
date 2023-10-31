@@ -30,7 +30,7 @@
             <div v-if="isVerification">
                 <div class="form-group text-start focused mt-4">
                     <label class="form-label" for="aadhar"> आधार क्रमांक</label>
-                    <input required @change="checkValidataty($event.target)" type="tel" pattern='^\d{12}$' minlength="12"
+                    <input :disabled="isReadOnly" required @change="checkValidataty($event.target)" type="tel" pattern='^\d{12}$' minlength="12"
                         maxlength="12" v-model="basicData.aadhar" class="form-input" id="aadhar" />
                 </div>
                 <div class="row mt-4">
@@ -38,20 +38,20 @@
                     <div class="col pr-0">
                         <div class="form-group text-start focused">
                             <label class="form-label" for="firstName">नाव </label>
-                            <input @change="checkValidataty($event.target)" required type="text"
+                            <input :disabled="isReadOnly" @change="checkValidataty($event.target)" required type="text"
                                 v-model="basicData.firstName" class="form-input" id="firstName" />
                         </div>
                     </div>
                     <div class="col px-0">
                         <div class="form-group text-start focused">
                             <label class="form-label" for="middleName">वडीलांचे नाव </label>
-                            <input required type="text" v-model="basicData.middleName" class="form-input" id="middleName" />
+                            <input :disabled="isReadOnly" required type="text" v-model="basicData.middleName" class="form-input" id="middleName" />
                         </div>
                     </div>
                     <div class="col pl-0">
                         <div class="form-group text-start focused">
                             <label class="form-label" for="lastName">आडनाव </label>
-                            <input @change="checkValidataty($event.target)" required type="text"
+                            <input :disabled="isReadOnly" @change="checkValidataty($event.target)" required type="text"
                                 v-model="basicData.lastName" class="form-input" id="lastName" />
                         </div>
                     </div>
@@ -59,7 +59,7 @@
 
                 <div class="form-group text-start focused mt-4">
                     <label class="form-label" for="dob">जन्म दिनांक </label>
-                    <input @change="checkValidataty($event.target)" :max="maxDate" required type="date"
+                    <input :disabled="isReadOnly" @change="checkValidataty($event.target)" :max="maxDate" required type="date"
                         v-model="basicData.dob" class="form-input" id="dob" />
                 </div>
             </div>
@@ -128,7 +128,7 @@
                         नाकारा </button>
                 </div>
             </div>
-            <div v-else class="container-login100-form-btn">
+            <div v-else-if="!isReadOnly" class="container-login100-form-btn">
                 <div class="wrap-login100-form-btn">
                     <div class="login100-form-bgbtn blue-color"></div>
                     <button :disabled="buttonDisabled" @click="submitDocument(-1)" class="login100-form-btn" type="button">
@@ -199,6 +199,9 @@ export default class VerifyDocuments extends Vue {
         console.log(route.query)
         if (route.query && route.query.sid) {
             this.sabhasadID = Number(this.urlSafeBase64Decode(route.query.sid.toString()));
+        }
+        if (route.query && route.query.ro) {
+            this.isReadOnly = true;
         }
       //  debugger;
         if (this.verifyStore.isSet) {

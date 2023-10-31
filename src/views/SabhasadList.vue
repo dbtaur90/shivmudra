@@ -1,5 +1,14 @@
 <template>
     <div class="table-responsive" style="max-width: 600px;">
+        <div class="row mt-2">
+            <div class="col-12 pr-0">
+                <div class="form-group text-start focused">
+                    <input @keyup="openFindInPage()" placeholder="शोधा" type="text" v-model="searchData" class="form-input"
+                        id="firstName" />
+                </div>
+            </div>
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -39,7 +48,8 @@
                             कागदपत्रे मागवा </button>
                     </td>
                     <td v-if="reference.isDocumentUploaded">
-                        <span class="bg-success text-white"
+                        <span @click="navigateToRoute('verifyDocuments', String(reference.sabhasadID), true)"
+                            class="bg-success text-white"
                             v-if="reference.verification && reference.verification.documentVerification">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-check" viewBox="0 0 16 16">
@@ -72,7 +82,7 @@
                                 v-if="reference.exStatus && (reference.exStatus == 1 || reference.exStatus == 2)">
                                 {{ reference.title }}
                             </span>
-                            <button v-else @click="navigateToPosting(reference.verification.sabhasadNumber)"
+                            <button v-else @click="navigateToRoute('postRequest', reference.verification.sabhasadNumber)"
                                 class="btn btn-link" type="button">नियुक्ती काढा</button>
                         </div>
                     </td>
@@ -90,32 +100,44 @@ import router from '@/router';
 import { useAuthStore } from '@/stores/AuthStore';
 declare global {
     interface Window {
-        otpless: any;
+        find: any;
     }
 }
 
 export default class SabhasadList extends Vue {
-
+    sabhasadListCopy: ISabhasadList[] = [];
     sabhasadList: ISabhasadList[] = [];
     isPostingAllowed = false;
     private verifyStore = useVerifyDocumentStore();
     private authStore = useAuthStore();
     private service!: SabhasadService;
+    searchData = '';
     async mounted(): Promise<void> {
         if (this.authStore.$state.loggedUser.post)
             this.isPostingAllowed = ['अध्यक्ष', 'उपाध्यक्ष', 'सचिव'].includes(this.authStore.$state.loggedUser.post);
-        else{
+        else {
             this.authStore.logout();
-            router.replace({name:'login'});
+            router.replace({ name: 'login' });
         }
         // Define the 'otpless' function
         this.service = new SabhasadService();
         document.title = "सभासद यादी| मराठा शिवमुद्रा प्रतिष्ठान"
         this.sabhasadList = await this.service.getSabhasadList();
+        this.sabhasadListCopy = [...this.sabhasadList]
     }
 
-    navigateToPosting(sabhasadNumber: string) {
-        router.push({ name: 'postRequest', query: { sn: this.urlSafeBase64Encode(sabhasadNumber) } });
+    navigateToRoute(nextRoute: string, sabhasadNumber: string, ro = false) {
+        let obj;
+        if (ro)
+            obj = {
+                sid: this.urlSafeBase64Encode(sabhasadNumber),
+                ro: 'ro'
+            }
+        else
+            obj = {
+                sn: this.urlSafeBase64Encode(sabhasadNumber)
+            }
+        router.push({ name: nextRoute, query: obj });
     }
 
     navigateRoute(reference: ISabhasadList, nextRoute: string, isVerification = true) {
@@ -141,6 +163,24 @@ export default class SabhasadList extends Vue {
             }
         }
 
+    }
+
+    openFindInPage() {
+        if (this.searchData.trim().length > 0) {
+            this.sabhasadList = this.sabhasadListCopy.filter(sabhasad =>
+                this.searchSafe(sabhasad.name).includes(this.searchSafe(this.searchData)) ||
+                this.searchSafe(sabhasad.verification?.sabhasadNumber).includes(this.searchSafe(this.searchData))
+            );
+        }
+        else{
+            this.sabhasadList = [...this.sabhasadListCopy];
+        }
+    }
+
+    searchSafe(str = '') {
+        if(!str) str = '';
+        return str.trim().toLocaleLowerCase().replaceAll('a', '')
+            .replaceAll('ee', 'i').replaceAll('oo', 'u');
     }
 
     urlSafeBase64Encode(str: string) {

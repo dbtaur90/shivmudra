@@ -4,7 +4,7 @@
   <div class="row" @click=" showSidebar = false ">
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" :class="{backdrop: showSidebar}">
       <router-view />
-      version 1.0.11
+      version 1.0.12
     </main>
   </div>
  

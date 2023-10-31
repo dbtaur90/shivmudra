@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { SabhasadDetails } from '../interfaces/SabhasadDetails';
 import { ISabhasadList } from '@/interfaces/ISabhasadList';
 import { useAuthStore } from '@/stores/AuthStore';
@@ -18,17 +18,27 @@ export class SabhasadService {
 
   public async getSabhasadList(): Promise<ISabhasadList[]> {
     const headers = this.getHeaders();
-    const response = await axios.get<ISabhasadList[]>(`${this.apiUrl}sabhasad-list`, { headers: headers });
-    if (response.status >= 200 && response.status < 300) {
-      return response.data;
-    }
-    else if (response.status >= 500 && response.status < 600)
-      return [];
-    else {
-      this.authStore.logout();
-      router.replace({ name: 'login' })
+    try {
+      const response = await axios.get<ISabhasadList[]>(`${this.apiUrl}sabhasad-list`, { headers: headers });
+      if (response.status >= 200 && response.status < 300) {
+        return response.data;
+      }
       return [];
     }
+    catch (e: any) {
+      const err: AxiosError = e;
+      if (err.response) {
+        if (!(err.response.status >= 500 && err.response.status < 600)) {
+          this.authStore.logout();
+          router.replace({ name: 'login' })
+        }
+      } else {
+        console.log(err);
+        alert(err);
+      }
+      return [];
+    }
+
   }
 
   public async generateSabhasadNumber(vid: number, sid: number): Promise<any> {

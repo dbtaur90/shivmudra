@@ -1,7 +1,7 @@
 import { PostIncomingRequest } from "@/interfaces/PostIncomingRequest";
 import router from "@/router";
 import { useAuthStore } from "@/stores/AuthStore";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export class ExecutiveService {
     private apiUrl = 'https://marathashivmudra.co.in/api/posting/';
@@ -9,17 +9,26 @@ export class ExecutiveService {
 
     public async getOpArea(payload: any) {
         const headers = this.getHeaders();
-        const response = await axios.get<any[]>(`${this.apiUrl}operationalArea`, { params: payload, headers: headers });
-        if (response.status >= 200 && response.status < 300) {
-            return response.data;
-        }
-        else if (response.status >= 500 && response.status < 600)
-            return [];
-        else {
-            this.authStore.logout();
-            router.replace({ name: 'login' })
+        try {
+            const response = await axios.get<any[]>(`${this.apiUrl}operationalArea`, { params: payload, headers: headers });
+            if (response.status >= 200 && response.status < 300) {
+                return response.data;
+            }
             return [];
         }
+        catch (e: any) {
+            const err: AxiosError = e;
+            if (err.response && !(err.response.status >= 500 && err.response.status < 600)) {
+                this.authStore.logout();
+                router.replace({ name: 'login' })
+            }
+            else {
+                console.log(err);
+                alert(err);
+            }
+            return [];
+        }
+
     }
 
     public async submitPostingRequest(payload: any) {
@@ -30,17 +39,25 @@ export class ExecutiveService {
 
     public async getPostRequestList() {
         const headers = this.getHeaders();
-        const response = await axios.get<PostIncomingRequest[]>(`${this.apiUrl}in-request-list`, { headers: headers });
-        if (response.status >= 200 && response.status < 300) {
-            return response.data;
-        }
-        else if (response.status >= 500 && response.status < 600)
+        try {
+            const response = await axios.get<PostIncomingRequest[]>(`${this.apiUrl}in-request-list`, { headers: headers });
+            if (response.status >= 200 && response.status < 300) {
+                return response.data;
+            }
             return [];
-        else {
-            this.authStore.logout();
-            router.replace({ name: 'login' })
+        } catch (e: any) {
+            const err: AxiosError = e;
+            if (err.status && !(err.status >= 500 && err.status < 600)) {
+                this.authStore.logout();
+                router.replace({ name: 'login' })
+            }
+            else {
+                console.log(err);
+                alert(err);
+            }
             return [];
         }
+
     }
 
     public async changePostingRequestStatus(executiveID: number, status = 1) {
